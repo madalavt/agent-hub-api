@@ -1,0 +1,273 @@
+# Agent Hub decision-tree GraphQL API.
+#
+# Modeled on Platform-DecisionTree-API (Ariadne, schema-first): the same type names and
+# relationship shapes (tree -> starting_node / nodes / branches -> parent_node / child_node,
+# node -> mlmodel / fields -> child_fields). A *Project* is the platform's *Configuration*
+# (customer + tree); `configuration` / `configurations` are kept as aliases.
+#
+# Whole-tree edits go through createTree / updateTree (validated as a unit). Node and branch
+# mutations edit one element and re-validate the whole tree.
+
+scalar JSON
+
+interface Identifiable {
+  id: ID!
+}
+
+type Identifier implements Identifiable {
+  id: ID!
+}
+
+type Customer implements Identifiable {
+  id: ID!
+  name: String!
+  description: String
+  created_at: String!
+  projects: [Project!]!
+  configurations: [Project!]!
+}
+
+type Project implements Identifiable {
+  id: ID!
+  name: String!
+  description: String
+  parameters: JSON
+  customer: Customer!
+  tree: Tree
+  created_on: String!
+}
+
+type MlModel implements Identifiable {
+  id: ID!
+  name: String!
+  type: String!
+  parameters: JSON
+  standard: Boolean!
+}
+
+type FieldType {
+  name: String! # string | number | currency | date | boolean | table
+  display_type: String!
+}
+
+type Field implements Identifiable {
+  id: ID!
+  name: String!
+  customer_key: String!
+  description: String!
+  field_type: FieldType!
+  threshold: Float!
+  sort_order: Int!
+  parent: Field
+  child_fields: [Field!]!
+}
+
+type Node implements Identifiable {
+  id: ID!
+  name: String!
+  type: String! # gpt_node | code_node
+  description: String
+  standard: Boolean!
+  parameters: JSON # prompt_template, function, table_key, domain_rules, ...
+  mlmodel: MlModel
+  fields: [Field!]!
+  is_start: Boolean!
+  tree: Tree!
+}
+
+type Branch implements Identifiable {
+  id: ID!
+  name: String
+  condition: String # empty = always; e.g. document_type == "Mortgage Change"
+  parent_node: Node!
+  child_node: Node!
+  tree: Tree!
+}
+
+type Tree implements Identifiable {
+  id: ID!
+  name: String!
+  description: String
+  business_context: String
+  version: Int!
+  parameters: JSON
+  layout: JSON
+  starting_node: Node
+  nodes: [Node!]!
+  branches: [Branch!]!
+  fields: [Field!]! # top-level fields of every node
+  projects: [Project!]!
+  configurations: [Project!]!
+  created_at: String!
+  updated_at: String!
+}
+
+type ValidationResult {
+  valid: Boolean!
+  errors: [String!]!
+}
+
+type ImportResult {
+  tree: Tree!
+  models: [String!]!
+  remapped_models: JSON
+  dropped_secrets: JSON
+  warnings: [String!]!
+}
+
+type Query {
+  customer(id: ID!): Customer
+  customers: [Customer!]!
+  project(id: ID!): Project
+  projects(customer_id: ID): [Project!]!
+  configuration(id: ID!): Project
+  configurations(customer_id: ID): [Project!]!
+  tree(id: ID!): Tree
+  trees: [Tree!]!
+  node(id: ID!): Node
+  nodes(tree_id: ID): [Node!]!
+  branch(id: ID!): Branch
+  branches(tree_id: ID): [Branch!]!
+  field(id: ID!): Field
+  mlmodel(id: ID!): MlModel
+  mlmodels: [MlModel!]!
+  "Project + customer + full tree + referenced models (what the extraction service runs)."
+  projectConfig(project_id: ID!): JSON
+  "Allowed node types, code functions, field types, model types and placeholders."
+  meta: JSON!
+}
+
+input CustomerCreateInput {
+  name: String!
+  description: String
+}
+
+input CustomerUpdateInput {
+  name: String
+  description: String
+}
+
+input ProjectCreateInput {
+  customer_id: ID!
+  name: String!
+  description: String
+  tree_id: ID
+  parameters: JSON
+}
+
+input ProjectUpdateInput {
+  name: String
+  description: String
+  tree_id: ID
+  parameters: JSON
+}
+
+input MlModelCreateInput {
+  name: String!
+  type: String!
+  parameters: JSON!
+  standard: Boolean
+}
+
+input MlModelUpdateInput {
+  name: String
+  type: String
+  parameters: JSON
+  standard: Boolean
+}
+
+input FieldInput {
+  name: String!
+  customer_key: String!
+  description: String
+  field_type: String # default "string"
+  threshold: Float
+  child_fields: [FieldInput!] # table columns
+}
+
+input NodeInput {
+  id: ID # client-chosen UUID, so branches in the same request can refer to it
+  name: String!
+  type: String!
+  description: String
+  mlmodel_id: ID
+  parameters: JSON
+  fields: [FieldInput!]
+  start_node: Boolean # make this the tree's starting node
+}
+
+input NodeUpdateInput {
+  name: String
+  type: String
+  description: String
+  mlmodel_id: ID
+  parameters: JSON
+  fields: [FieldInput!] # replaces the node's fields
+  start_node: Boolean
+}
+
+input BranchInput {
+  parent_node_id: ID!
+  child_node_id: ID!
+  name: String
+  condition: String
+}
+
+input BranchUpdateInput {
+  parent_node_id: ID
+  child_node_id: ID
+  name: String
+  condition: String
+}
+
+input TreeCreateInput {
+  name: String!
+  description: String
+  business_context: String
+  starting_node_id: ID
+  parameters: JSON
+  layout: JSON
+  nodes: [NodeInput!]!
+  branches: [BranchInput!]!
+}
+
+input TreeUpdateInput {
+  name: String
+  description: String
+  business_context: String
+  starting_node_id: ID
+  parameters: JSON
+  layout: JSON
+  nodes: [NodeInput!] # when given, replaces all nodes
+  branches: [BranchInput!] # when given, replaces all branches
+}
+
+type Mutation {
+  createCustomer(input: CustomerCreateInput!): Customer!
+  updateCustomer(id: ID!, input: CustomerUpdateInput!): Customer!
+  deleteCustomer(id: ID!): Identifier!
+
+  createProject(input: ProjectCreateInput!): Project!
+  updateProject(id: ID!, input: ProjectUpdateInput!): Project!
+  deleteProject(id: ID!): Identifier!
+
+  createMlModel(input: MlModelCreateInput!): MlModel!
+  updateMlModel(id: ID!, input: MlModelUpdateInput!): MlModel!
+  deleteMlModel(id: ID!): Identifier!
+
+  createTree(input: TreeCreateInput!): Tree!
+  updateTree(id: ID!, input: TreeUpdateInput!): Tree!
+  deleteTree(id: ID!): Identifier!
+  duplicateTree(id: ID!): Tree!
+  validateTree(input: TreeCreateInput!): ValidationResult!
+  "Import a Platform-DecisionTree-API export (data.configuration.tree or data.tree)."
+  importTree(export: JSON!, name: String, branches: JSON, starting_node: String): ImportResult!
+
+  createNode(tree_id: ID!, input: NodeInput!): Node!
+  updateNode(id: ID!, input: NodeUpdateInput!): Node!
+  deleteNode(id: ID!): Identifier!
+
+  createBranch(tree_id: ID!, input: BranchInput!): Branch!
+  updateBranch(id: ID!, input: BranchUpdateInput!): Branch!
+  deleteBranch(id: ID!): Identifier!
+}

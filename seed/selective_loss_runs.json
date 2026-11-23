@@ -1,0 +1,2205 @@
+{
+ "customer": "Selective",
+ "project": "Loss Runs",
+ "project_id": "40402aad-7849-4425-b189-c0c96eefab2c",
+ "starting_node": "Document Type",
+ "branches": [
+  {
+   "parent": "Document Type",
+   "child": "Loss Runs Policy Table",
+   "condition": "document_type == \"Loss Runs\"",
+   "name": "Loss Runs"
+  },
+  {
+   "parent": "Document Type",
+   "child": "OTHERS",
+   "condition": "document_type == \"OTHERS\"",
+   "name": "Others"
+  },
+  {
+   "parent": "Loss Runs Policy Table",
+   "child": "Loss Runs Policy Verifier"
+  },
+  {
+   "parent": "Loss Runs Policy Verifier",
+   "child": "Loss Runs Claims Table"
+  },
+  {
+   "parent": "Loss Runs Claims Table",
+   "child": "Loss Runs Claims Verifier"
+  },
+  {
+   "parent": "Loss Runs Claims Verifier",
+   "child": "Claims Business Verifier"
+  }
+ ],
+ "export": {
+  "configuration": {
+   "name": "Selective - Loss Runs",
+   "description": "Decision tree for Selective - Loss Runs",
+   "parameters": {
+    "postprocessing": [
+     {
+      "name": "compute_math",
+      "arguments": {}
+     }
+    ]
+   },
+   "split_package": true,
+   "ocr_page_limit": null,
+   "include_hidden_sheets": false,
+   "split_for_igpt": false,
+   "tree": {
+    "id": "35df02ab-a4b0-4d17-b6fd-b02d9c46eb40",
+    "nodes": [
+     {
+      "id": "e8f40522-bd47-4e60-9cfe-68bd2ca8e043",
+      "name": "Document Type",
+      "type": "gpt_node",
+      "parameters": {
+       "prompt_template": {
+        "ai": "\n{output}\n",
+        "human": "\nHere is the document:\n\n{text}\n",
+        "system": "You are a highly intelligent insurance administrator and your responsibility is to read emails and/or document packages pertaining to insurance underwriting and return the document type. In order to determine the document type, it is important to read all the contents of each email or package thoroughly. Often, you might come across multiple documents in one package. In such cases, determine the primary purpose or main reason for the email or package to decide its document type. If it's not clear, categorize it as 'OTHERS'. Note the document type is of the format \\\"document type\\\" Here is a full list of document types with a brief description:\n*    Loss Runs: Provides a historical record of claims made on an insurance policy. It typically includes detailed claims data, such as 'Date of Loss,' 'Claim Number,' 'Paid Amount,' and 'Reserve Amount,' summarizing the loss history of the insured.\n    * OTHERS: Items that do not have Loss Runs.\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n"
+       }
+      },
+      "mlmodel": {
+       "id": "ce143033-684e-4e60-a35a-dbacaaa48416",
+       "name": "IGPT Primary",
+       "type": "gpt",
+       "standard": true,
+       "parameters": {
+        "model_name": "gpt-4.1-2025-04-14",
+        "model_type": "azure_openai",
+        "fallback_node_type": "gpt_node",
+        "max_context_tokens": 256000,
+        "fallback_mlmodel_id": "09d22b8a-558e-4ae7-8169-04a948215437",
+        "max_completion_tokens": 32768
+       }
+      },
+      "fields": [
+       {
+        "id": "2355b73b-52b0-4a38-a696-64102a2966fa",
+        "name": "Document Type",
+        "customer_key": "document_type",
+        "description": "Return one of the above listed fields. It can't be blank so try to make a best guess if you are not sure from the list above.",
+        "threshold": 0.1,
+        "field_type": {
+         "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+         "name": "string",
+         "display_type": "text",
+         "customer_field_type": null
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 0
+        },
+        "library_field": {
+         "template": {
+          "id": "34a38910-a421-42c2-b656-25f728b28df5",
+          "name": "Text"
+         }
+        },
+        "child_fields": []
+       }
+      ]
+     },
+     {
+      "id": "0a8e7b02-2687-40fe-ad50-7ddb2821c107",
+      "name": "OTHERS",
+      "type": "gpt_node",
+      "parameters": {
+       "prompt_template": {
+        "ai": "\n{output}\n",
+        "human": "\n{text}\n",
+        "system": "\n\nDo not extract anything from this node.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n"
+       }
+      },
+      "mlmodel": {
+       "id": "ce143033-684e-4e60-a35a-dbacaaa48416",
+       "name": "IGPT Primary",
+       "type": "gpt",
+       "standard": true,
+       "parameters": {
+        "model_name": "gpt-4.1-2025-04-14",
+        "model_type": "azure_openai",
+        "fallback_node_type": "gpt_node",
+        "max_context_tokens": 256000,
+        "fallback_mlmodel_id": "09d22b8a-558e-4ae7-8169-04a948215437",
+        "max_completion_tokens": 32768
+       }
+      },
+      "fields": [
+       {
+        "id": "4e5b0858-d767-4daa-a92b-2891dd552313",
+        "name": "Placeholder",
+        "customer_key": "placeholder",
+        "description": "Return a string value of \"placeholder\".",
+        "threshold": 0.1,
+        "field_type": {
+         "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+         "name": "string",
+         "display_type": "text",
+         "customer_field_type": null
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 0
+        },
+        "library_field": {
+         "template": {
+          "id": "34a38910-a421-42c2-b656-25f728b28df5",
+          "name": "Text"
+         }
+        },
+        "child_fields": []
+       }
+      ]
+     },
+     {
+      "id": "650416e8-d82c-49a2-8ece-3f1b8f527064",
+      "name": "Loss Runs Policy Table",
+      "type": "code_node",
+      "parameters": {
+       "function": "tables.chunking.process",
+       "prompt_format": "list",
+       "prompt_template": {
+        "ai": "\n{output}\n",
+        "human": "\nHere is the text of the loss run:\n< Document >\n{text}\n</ Document >\n",
+        "system": "\nYou are a knowledgeable insurance administrator with expertise in loss run analysis and annotation. \nYour task is to extract structured, year-by-year, policy-level data from loss run reports using the guidelines and data model provided below. \nEach loss run may include multiple policies; ensure that each policy is uniquely and accurately represented, broken down into yearly data as needed.\n\nLoss Run Context:\nA loss run report details the claims history and policy information within an insurance portfolio. \nYour extraction should focus solely on policy-level data and ignore claim-specific details.\n\nInstructions:\n\n1. Output Format:\n   - Return a valid JSON array of arrays (a Python list of lists).\n   - When extracting data, the first sub-array must contain the column headers as defined by the extraction fields in the order they appear below.\n   - Each subsequent sub-array must contain the corresponding values for a single policy term, aligned with the headers. Do not output more or less than the columns specified.\n   - Output only the JSON without any additional commentary. Do not include any other text or explanations.\n   - If the input document does not contain any policy data, output an empty JSON array `[]`. Do not output the headers in this case.\n   - Never provide commentary, explanations, or any other text outside of the JSON array.\n\n2. Data Handling & Formatting:\n   - Ensure every row aligns with the headers exactly. Never output too many or too few columns.\n   - Dates must be formatted as month/day/year without leading zeros (e.g., 3/2/2025 using '%-m/%-d/%Y').\n   - Present numeric values as raw decimals (exclude commas and currency symbols).\n   - For any missing or inapplicable field, output an empty string \"\" (do not use \"null\" or \"N/A\").\n   - If a field contains multiple string values (e.g., multiple named insured), concatenate them with a semicolon (;) and a space (e.g., \"John Doe; Jane Smith\") in the order they appear in the text.\n   - For numeric fields with multiple values (e.g., multiple payments), use the math tag format:\n         <MATH>arg_1 op_1 arg_2 op_2 ... op_(n-1) arg_n</MATH>\n         (where each op is either + or -, and each arg is a real number found in the text)\n         Example: <MATH>100 + 200 - 50</MATH>\n   - As much as possible, preserve all textual data exactly as it appears.\n\n3. Domain-Specific Guidelines:\n   - Strictly adhere to the provided extraction field definitions below.\n   - Map varied terminology from different carriers/lines of business accurately to the defined fields. For instance:\n         - Use \"The Hartford Insurance Group\" instead of \"Hartford\".\n         - Use \"The Travelers Companies\" instead of \"Travelers\".\n         - Use \"E&O\" instead of \"Medical Malpractice\" or \"Professional Liability\".\n\n4. Line of Business Definitions (use these exact terms when classifying the line of business):\n   - **Accident & Health**: First-party insurance that pays specified benefits for accidental injury, sickness, disability, or accidental death. Often written on a blanket or group basis for participants, students, volunteers, athletes, travelers, or employees outside the scope of Workers' Comp.\n   - **Auto**: Auto insurance covers risks of vehicle ownership and operation, including Auto Liability (third-party injury/property damage) and Auto Physical Damage (repair or replacement of the insured vehicle). \n   - **Aviation**: Covers risks of operating aircraft-hull damage and liability for injuries/property damage to passengers, third parties, or during ground operations.\n   - **Boiler & Machinery**: Covers repair/replacement of equipment or machinery damaged by mechanical breakdown, electrical failure, or explosions, and may cover resulting business interruption.\n   - **BOP**: A Business Owner's Policy bundles property and general liability coverages for small businesses, often adding tailored protections.\n   - **Cargo**: Protects goods in transit (sea, air, or land) against loss or damage, preserving shipment value.\n   - **Crime/Fidelity**: Protects against financial loss from theft, fraud, forgery, or embezzlement by employees or outsiders; fidelity focuses on employee dishonesty.\n   - **Cyber**: Covers technology-related risks such as data breaches, cyber-attacks, and associated costs (notification, investigation, legal, business interruption).\n   - **D&O**: Protects directors and officers against lawsuits alleging mismanagement, breach of fiduciary duty, or other wrongful acts.\n   - **E&O**: Errors & Omissions (professional liability) insurance shields professionals from claims of negligence, inadequate work, or failure to perform services.\n   - **EPLI**: Employment Practices Liability Insurance covers claims from workplace issues like discrimination, harassment, wrongful termination, or retaliation.\n   - **GL**: General Liability insurance covers bodily injury, property damage, and personal/advertising injury arising from routine business operations.\n   - **Inland Marine**: Covers goods transported over land and mobile/specialized property in temporary storage, protecting against theft or transit damage.\n   - **Marine**: Marine insurance covers risks on oceans or inland waterways for vessels and cargo, including hull damage and liabilities from pollution or collisions.\n   - **Package**: Package insurance combines multiple coverages (property, liability, etc.) into one tailored policy-distinct from an umbrella policy that only adds excess limits. Policies can have a Package LOB, but claims should be classified under the specific LOB.\n   - **Property**: Property insurance protects buildings, equipment, and inventory from perils like fire, theft, and natural disasters.\n   - **Umbrella**: Umbrella insurance provides excess liability coverage above underlying policy limits, filling gaps for large or catastrophic claims.\n   - **WC & EL**: Workers' Compensation (WC) insurance covers job-related injuries, while Employers' Liability (EL) protects against lawsuits from those injuries.\n   - **None**: Placeholder when no Line of Business is present and cannot be inferred from context. Leave blank if this is the case.\n   \nExtraction Fields:\n{extraction_fields}\n\nYour task: Precisely extract the structured policy-level data, ensuring that your output is a valid, error-free JSON array per the guidelines above. Remember, if no policy data is present, output an empty JSON array [] without headers.\n"
+       }
+      },
+      "mlmodel": {
+       "id": "24802eea-6e56-4beb-9eb1-a1f7af9c5f45",
+       "name": "IGPT Loss Runs Pro",
+       "type": "finetuned_streaming",
+       "standard": true,
+       "parameters": {
+        "url": "https://model-wnpvjld3.api.baseten.co/environments/production/sync/v1",
+        "max_tokens": 28672,
+        "model_name": "unsloth/Qwen3.5-27B",
+        "model_type": "finetuned_streaming",
+        "fallback_node_type": "gpt_node",
+        "max_context_tokens": 32700,
+        "fallback_mlmodel_id": null,
+        "max_completion_tokens": 16384
+       }
+      },
+      "fields": [
+       {
+        "id": "8607a44a-a310-4f19-8490-f6528e8566c8",
+        "name": "Loss Runs Policy Table",
+        "customer_key": "loss_runs_policy_table",
+        "description": "description for table",
+        "threshold": 0.5,
+        "field_type": {
+         "id": "fd28a393-eb1c-4af8-8920-caf5132b5692",
+         "name": "table",
+         "display_type": "multiselect",
+         "customer_field_type": null
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 0
+        },
+        "library_field": {
+         "template": {
+          "id": "f80f5cfa-d13d-4256-bf68-fbc6fe10f58f",
+          "name": "Table"
+         }
+        },
+        "child_fields": [
+         {
+          "id": "d184e078-cb4a-4177-bf24-c94d73b9ba10",
+          "name": "Policy - Indemnity Reserves",
+          "customer_key": "policy_indemnity_reserves",
+          "description": "The funds set aside for anticipated future indemnity payments related to claim settlements. It reflects the insurer's projected future liability for indemnity claims",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 2
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "67e14a49-e646-4b4d-bd77-0154133e5bf8",
+          "name": "Policy - Medical Reserves",
+          "customer_key": "policy_medical_reserves",
+          "description": "The funds reserved for anticipated future medical expenses under the policy. This represents the insurer's estimated liability for medical costs that have been incurred but not yet paid.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 3
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "44642574-a256-437f-93ed-f6d6d336dcb6",
+          "name": "Policy - Recoveries",
+          "customer_key": "policy_recoveries",
+          "description": "The total amount recouped by the insurer from third parties (e.g., through subrogation or reinsurance) to offset claim costs. It represents money recovered after claims settlement.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 5
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "73e8bdda-30fa-48e9-a353-d6dd55db3212",
+          "name": "Policy - Expiration Date",
+          "customer_key": "policy_expiration_date",
+          "description": "The calendar date on which the policy term ends and coverage ceases. If the policy is cancelled mid-term, record the cancellation effective date (flat, pro-rata, or short-rate) in place of the scheduled expiration. Ignore binder expirations, automatic-renewal placeholders, retroactive dates, extended-reporting (\"tail\") periods, non-renewal notice dates, and policy-year ranges unless the document states they replace the original expiration. Extract only a date explicitly labelled \"expiration,\" \"expiry,\" or \"cancellation effective.\" Do not infer.",
+          "threshold": 0.3,
+          "field_type": {
+           "id": "942b55ad-a295-4e12-83d4-0ad37eefde0a",
+           "name": "date",
+           "display_type": "date",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 11
+          },
+          "library_field": {
+           "template": {
+            "id": "ccdf9d8f-ca26-47a9-890a-95a53f74fcd4",
+            "name": "Date"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "4f4d543a-5d7f-4efe-b810-0c7ef86e82a6",
+          "name": "Policy - Indemnity Paid",
+          "customer_key": "policy_indemnity_paid",
+          "description": "The total sum of cash benefit payments made to the insured or beneficiaries under the policy to compensate for losses or damages.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 4
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "b70f4904-b863-4146-97fd-86b27c856c9a",
+          "name": "Policy - Inception Date",
+          "customer_key": "policy_inception_date",
+          "description": "The exact calendar date on which the policy first becomes contractually in force. Record only the date explicitly labeled as \"inception,\" \"effective,\" or \"policy start\"; ignore binder dates, retroactive dates, search dates, endorsement effective dates, renewal/anniversary dates, and policy-year ranges unless the document states they replace the original inception. If multiple coverages are listed, choose the inception date that applies to this specific loss-run entry. Do not infer this value\u2014capture it only when plainly stated.",
+          "threshold": 0.3,
+          "field_type": {
+           "id": "942b55ad-a295-4e12-83d4-0ad37eefde0a",
+           "name": "date",
+           "display_type": "date",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 10
+          },
+          "library_field": {
+           "template": {
+            "id": "ccdf9d8f-ca26-47a9-890a-95a53f74fcd4",
+            "name": "Date"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "1bd4cf85-ac0c-454c-81f4-ed74dc8720ba",
+          "name": "Policy - Allocated Expenses Paid",
+          "customer_key": "policy_allocated_expenses_paid",
+          "description": "The total payments made for direct, claim-specific expenses under the policy. This covers actual disbursements for costs like investigations or administrative fees that have already been incurred.",
+          "threshold": 0.2,
+          "field_type": {
+           "id": "2d874b48-a3a8-4d71-99b8-6e892e12dac8",
+           "name": "number",
+           "display_type": "number",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 19
+          },
+          "library_field": {
+           "template": {}
+          },
+          "child_fields": []
+         },
+         {
+          "id": "158149b4-8b9b-410a-a68a-cc305030bbe3",
+          "name": "Policy - Named Insured",
+          "customer_key": "policy_named_insured",
+          "description": "The primary individual or organization explicitly named on the policy. This party is entitled to the policy benefits and is responsible for its obligations. If multiple names are present, list them separated by semicolons. Preserve the text exactly as it appears in the document. Exclude additional or contingent insured parties.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 16
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "e73c244e-ae81-454a-b92d-f5655e927521",
+          "name": "Policy - Valuation Date",
+          "customer_key": "policy_valuation_date",
+          "description": "The cut-off date to which all claim payments, reserve adjustments, and exposure data in this loss-run are updated. Use only the date explicitly labeled \"valuation date,\" \"as of,\" or similar; it may differ from the PDF's print/report date. Underwriters treat loss-runs as \"currently valued\" only if this date is within 30-120 days of their review.",
+          "threshold": 0.3,
+          "field_type": {
+           "id": "942b55ad-a295-4e12-83d4-0ad37eefde0a",
+           "name": "date",
+           "display_type": "date",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 15
+          },
+          "library_field": {
+           "template": {
+            "id": "ccdf9d8f-ca26-47a9-890a-95a53f74fcd4",
+            "name": "Date"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "e0779ac8-d074-4a98-83c3-ecd1e8af791e",
+          "name": "Policy - Total Incurred",
+          "customer_key": "policy_total_incurred",
+          "description": "A net measure of the insurer\\'s overall exposure under the policy, calculated as Total Paid plus Total Reserve minus Recoveries. This figure reflects the insurer's effective financial liability after accounting for recoveries. Also encompasses total estimated loss.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 0
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "c8f1f446-d02b-4966-9a5c-cedae4b8a93f",
+          "name": "Policy - Total Claims",
+          "customer_key": "policy_total_claims",
+          "description": "The overall count of claims reported under the policy, including both open and closed claims. This provides an at-a-glance summary of claim activity. If only open and closed counts are provided, the total claims count is the sum of these two. If no counts are provided, do not attempt to calculate the total claims from the individual claims.",
+          "threshold": 0.2,
+          "field_type": {
+           "id": "2d874b48-a3a8-4d71-99b8-6e892e12dac8",
+           "name": "number",
+           "display_type": "number",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 1
+          },
+          "library_field": {
+           "template": {
+            "id": "588f9757-1523-4da7-81e6-c6cb982e7ef2",
+            "name": "Number"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "5469535d-fa82-4fb7-b616-25f299b1354c",
+          "name": "Policy - Total Paid",
+          "customer_key": "policy_total_paid",
+          "description": "The aggregate sum of all payments made under the policy to settle claims, including medical, indemnity, and allocated expense payments.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 7
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "83c1dbd0-f50a-474e-bc75-3f261b2b803d",
+          "name": "Policy - Current Experience Mod",
+          "customer_key": "policy_current_experience_mod",
+          "description": "A ratio factor used to adjust premiums based on the insured\\'s historical loss experience relative to an industry benchmark. A value of 1.0 indicates average experience; values below 1.0 suggest favorable experience (lower risk) and above 1.0 indicate less favorable experience. This is expressed as a decimal rather than a percentage. This is specific to Workers Compensation policies and should not appear in other lines of business.",
+          "threshold": 0.2,
+          "field_type": {
+           "id": "2d874b48-a3a8-4d71-99b8-6e892e12dac8",
+           "name": "number",
+           "display_type": "number",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 8
+          },
+          "library_field": {
+           "template": {
+            "id": "588f9757-1523-4da7-81e6-c6cb982e7ef2",
+            "name": "Number"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "f0dfe226-c9b8-48d8-85fe-98d431a97a4a",
+          "name": "Policy - Policy Year",
+          "customer_key": "policy_policy_year",
+          "description": "The 4-digit calendar year in which the policy's coverage period begins. The policy year is the first 12 months starting on the policy's effective date; it need not match the calendar year. If the term is shorter or longer than 12 months (short-term, multi-year, or stub periods), still use the start year. When the source shows a range (e.g., \"2023-24\"), capture the first year (\"2023\"). Recognize synonyms such as \"coverage year,\" \"policy cycle,\" or \"policy period\\\" but do not confuse with accident year, calendar year, or health-plan year.",
+          "threshold": 0.2,
+          "field_type": {
+           "id": "2d874b48-a3a8-4d71-99b8-6e892e12dac8",
+           "name": "number",
+           "display_type": "number",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 12
+          },
+          "library_field": {
+           "template": {
+            "id": "588f9757-1523-4da7-81e6-c6cb982e7ef2",
+            "name": "Number"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "7d033275-f6b3-46a5-9563-f61d638d16c4",
+          "name": "Policy - Total Closed Claims",
+          "customer_key": "policy_total_closed_claims",
+          "description": "The number of claims under the policy that have been fully processed and resolved (settled or denied), marking them as closed. If no counts are provided, do not attempt to calculate the total closed claims from the individual claims.",
+          "threshold": 0.2,
+          "field_type": {
+           "id": "2d874b48-a3a8-4d71-99b8-6e892e12dac8",
+           "name": "number",
+           "display_type": "number",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 13
+          },
+          "library_field": {
+           "template": {
+            "id": "588f9757-1523-4da7-81e6-c6cb982e7ef2",
+            "name": "Number"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "0ee28c63-dbef-48b2-b849-d41cbab1da9e",
+          "name": "Policy - Policy Number",
+          "customer_key": "policy_policy_number",
+          "description": "The exact alphanumeric string the carrier assigns to the contract, including any prefixes, dashes, or renewal/location suffixes (\"-00\", \"-01\", \"A\", etc.). Accept labels such as \"Policy No.\", \"Policy ID\", \"SAI\", \"Certificate Policy #\", or the unlabeled number on a dec-page/COI line. Exclude group or member IDs, claim numbers, quote/binder numbers, and ACORD certificate numbers unless the document states they are the final policy number. Preserve original formatting (capitalization, punctuation, leading zeros). Do not infer or re-format\u2014record only an explicitly stated policy number.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 17
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "8b43e9be-1a62-4aa8-b61a-77b80cbe4e9d",
+          "name": "Policy - Total Open Claims",
+          "customer_key": "policy_total_open_claims",
+          "description": "The number of claims under the policy that are still active or pending resolution. This count reflects claims that have not yet been finalized. If no counts are provided, do not attempt to calculate the total open claims from the individual claims.",
+          "threshold": 0.2,
+          "field_type": {
+           "id": "2d874b48-a3a8-4d71-99b8-6e892e12dac8",
+           "name": "number",
+           "display_type": "number",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 14
+          },
+          "library_field": {
+           "template": {
+            "id": "588f9757-1523-4da7-81e6-c6cb982e7ef2",
+            "name": "Number"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "0369b522-623d-4d94-b8e5-51f871585faf",
+          "name": "Policy - Allocated Expense Reserves",
+          "customer_key": "policy_allocated_expense_reserves",
+          "description": "The funds earmarked for anticipated future claim-specific expenses under the policy. This represents the projected liability for allocated expenses (such as investigation or administrative costs) that have not yet been incurred.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 6
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "cb6785b4-31a3-4d44-8ecd-7db2f1d40b6e",
+          "name": "Policy - Line of Business",
+          "customer_key": "policy_line_of_business",
+          "description": "The categorical designation of the insurance coverage provided by the policy. It must be selected from a fixed, predefined list (Auto, Aviation, Boiler & Machinery, BOP, Cargo, Crime/Fidelity, Cyber, D&O, E&O, EPLI, GL, Inland Marine, Marine, Package, Property, Umbrella, WC & EL). Map any synonym, trade name, or emerging term to one standard LOB (e.g., \"Comp\" to \"WC & EL\"; \"Management Liability - D&O\" to \"D&O\"). For multi-coverage or package policies, pick the LOB explicitly stated for the loss-run entry; default to the dominant coverage if multiple are listed. Surplus-lines or non-admitted forms still map to the same parent LOB. If the LOB is not explicitly stated, use the most appropriate term from the list. If the LOB cannot be determined, leave it blank.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 9
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "c6f5c231-c6b7-4a1e-8489-739a02ea8f3a",
+          "name": "Policy - Carrier",
+          "customer_key": "policy_carrier",
+          "description": "The licensed insurance company that issues the policy, assumes contractual risk, and pays covered claims (distinct from agents, brokers, MGAs, or TPAs). Normalize to the carrier's full legal name as filed with regulators (use the NAIC-issued name when present). Expand acronyms and trade names (e.g., \"AFICA\" to \"Accident Fund Insurance Company of America\"; \"State Fund\" to \"State Compensation Insurance Fund\"). For non-admitted / surplus-lines insurers, record the non-admitted carrier's legal name. Fronting or \"paper\" carriers, capture the issuing carrier on whose paper the policy is written, even if a captive or reinsurer ultimately bears the risk. Layered programmes, if multiple carriers appear, list the carrier specific to that loss-run entry. Accept synonyms such as insurer, insurance company, writing company, underwriting company; reject terms referring to intermediaries.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 18
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "429afe3a-de70-4b4d-9428-b88b889977e7",
+      "name": "Loss Runs Policy Verifier",
+      "type": "code_node",
+      "parameters": {
+       "function": "verifiers.verify_table.process",
+       "table_key": "loss_runs_policy_table",
+       "table_fields": [
+        {
+         "name": "policy_total_claims",
+         "type": "number"
+        },
+        {
+         "name": "policy_total_paid",
+         "type": "currency"
+        },
+        {
+         "name": "policy_experience_mod",
+         "type": "number"
+        },
+        {
+         "name": "policy_total_closed_claims",
+         "type": "number"
+        },
+        {
+         "name": "policy_total_open_claims",
+         "type": "number"
+        },
+        {
+         "name": "policy_named_insured",
+         "type": "string"
+        },
+        {
+         "name": "policy_carrier",
+         "type": "string"
+        },
+        {
+         "name": "policy_indemnity_reserves",
+         "type": "currency"
+        },
+        {
+         "name": "policy_medical_reserves",
+         "type": "currency"
+        },
+        {
+         "name": "policy_indemnity_paid",
+         "type": "currency"
+        },
+        {
+         "name": "policy_recoveries",
+         "type": "currency"
+        },
+        {
+         "name": "policy_allocated_expenses_paid",
+         "type": "currency"
+        },
+        {
+         "name": "policy_inception_date",
+         "type": "date"
+        },
+        {
+         "name": "policy_expiration_date",
+         "type": "date"
+        },
+        {
+         "name": "policy_policy_year",
+         "type": "number"
+        },
+        {
+         "name": "policy_policy_number",
+         "type": "string"
+        },
+        {
+         "name": "policy_total_incurred",
+         "type": "currency"
+        },
+        {
+         "name": "policy_allocated_expense_reserves",
+         "type": "currency"
+        },
+        {
+         "name": "policy_line_of_business",
+         "type": "categorical"
+        },
+        {
+         "name": "policy_validation_date",
+         "type": "date"
+        }
+       ],
+       "prompt_template": {
+        "ai": "\n{output}\n",
+        "human": "\nHere is the text of the loss run:\n< Document >\n{text}\n</ Document >\nHere is the annotation of the above loss run:\n< Annotation >\n{annot}\n</ Annotation >\n",
+        "system": "You are an insurance data validation expert. Your job is to read a loss run document and determine whether the provided annotation of this document is correct and complete. Be careful that the annotation has neither too many or too few any rows of data. Here are the instructions given to the annotators whose work you must validate. Do not follow these instructions yourself, but use them as context for your verification task:\n\nBEGIN ANNOTATION INSTRUCTIONS\n\nYou are a knowledgeable insurance administrator with expertise in loss run analysis and annotation. \nYour task is to extract structured, year-by-year, policy-level data from loss run reports using the guidelines and data model provided below. \nEach loss run may include multiple policies; ensure that each policy is uniquely and accurately represented, broken down into yearly data as needed.\n\nLoss Run Context:\nA loss run report details the claims history and policy information within an insurance portfolio. \nYour extraction should focus solely on policy-level data and ignore claim-specific details.\n\nInstructions:\n\n1. Output Format:\n   - Return a valid JSON array of arrays (a Python list of lists).\n   - When extracting data, the first sub-array must contain the column headers as defined by the extraction fields in the order they appear below.\n   - Each subsequent sub-array must contain the corresponding values for a single policy term, aligned with the headers. Do not output more or less than the columns specified.\n   - Output only the JSON without any additional commentary. Do not include any other text or explanations.\n   - If the input document does not contain any policy data, output an empty JSON array `[]`. Do not output the headers in this case.\n   - Never provide commentary, explanations, or any other text outside of the JSON array.\n\n2. Data Handling & Formatting:\n   - Ensure every row aligns with the headers exactly. Never output too many or too few columns.\n   - Dates must be formatted as month/day/year without leading zeros (e.g., 3/2/2025 using '%-m/%-d/%Y').\n   - Present numeric values as raw decimals (exclude commas and currency symbols).\n   - For any missing or inapplicable field, output an empty string \"\" (do not use \"null\" or \"N/A\").\n   - If a field contains multiple string values (e.g., multiple named insured), concatenate them with a semicolon (;) and a space (e.g., \"John Doe; Jane Smith\") in the order they appear in the text.\n   - For numeric fields with multiple values (e.g., multiple payments), use the math tag format:\n         <MATH>arg_1 op_1 arg_2 op_2 ... op_(n-1) arg_n</MATH>\n         (where each op is either + or -, and each arg is a real number found in the text)\n         Example: <MATH>100 + 200 - 50</MATH>\n   - As much as possible, preserve all textual data exactly as it appears.\n\n3. Domain-Specific Guidelines:\n   - Strictly adhere to the provided extraction field definitions below.\n   - Map varied terminology from different carriers/lines of business accurately to the defined fields. For instance:\n         - Use \"The Hartford Insurance Group\" instead of \"Hartford\".\n         - Use \"The Travelers Companies\" instead of \"Travelers\".\n         - Use \"E&O\" instead of \"Medical Malpractice\" or \"Professional Liability\".\n\n4. Line of Business Definitions (use these exact terms when classifying the line of business):\n   - **Accident & Health**: First-party insurance that pays specified benefits for accidental injury, sickness, disability, or accidental death. Often written on a blanket or group basis for participants, students, volunteers, athletes, travelers, or employees outside the scope of Workers' Comp.\n   - **Auto**: Auto insurance covers risks of vehicle ownership and operation, including Auto Liability (third-party injury/property damage) and Auto Physical Damage (repair or replacement of the insured vehicle). \n   - **Aviation**: Covers risks of operating aircraft-hull damage and liability for injuries/property damage to passengers, third parties, or during ground operations.\n   - **Boiler & Machinery**: Covers repair/replacement of equipment or machinery damaged by mechanical breakdown, electrical failure, or explosions, and may cover resulting business interruption.\n   - **BOP**: A Business Owner's Policy bundles property and general liability coverages for small businesses, often adding tailored protections.\n   - **Cargo**: Protects goods in transit (sea, air, or land) against loss or damage, preserving shipment value.\n   - **Crime/Fidelity**: Protects against financial loss from theft, fraud, forgery, or embezzlement by employees or outsiders; fidelity focuses on employee dishonesty.\n   - **Cyber**: Covers technology-related risks such as data breaches, cyber-attacks, and associated costs (notification, investigation, legal, business interruption).\n   - **D&O**: Protects directors and officers against lawsuits alleging mismanagement, breach of fiduciary duty, or other wrongful acts.\n   - **E&O**: Errors & Omissions (professional liability) insurance shields professionals from claims of negligence, inadequate work, or failure to perform services.\n   - **EPLI**: Employment Practices Liability Insurance covers claims from workplace issues like discrimination, harassment, wrongful termination, or retaliation.\n   - **GL**: General Liability insurance covers bodily injury, property damage, and personal/advertising injury arising from routine business operations.\n   - **Inland Marine**: Covers goods transported over land and mobile/specialized property in temporary storage, protecting against theft or transit damage.\n   - **Marine**: Marine insurance covers risks on oceans or inland waterways for vessels and cargo, including hull damage and liabilities from pollution or collisions.\n   - **Package**: Package insurance combines multiple coverages (property, liability, etc.) into one tailored policy-distinct from an umbrella policy that only adds excess limits. Policies can have a Package LOB, but claims should be classified under the specific LOB.\n   - **Property**: Property insurance protects buildings, equipment, and inventory from perils like fire, theft, and natural disasters.\n   - **Umbrella**: Umbrella insurance provides excess liability coverage above underlying policy limits, filling gaps for large or catastrophic claims.\n   - **WC & EL**: Workers' Compensation (WC) insurance covers job-related injuries, while Employers' Liability (EL) protects against lawsuits from those injuries.\n   - **None**: Placeholder when no Line of Business is present and cannot be inferred from context. Leave blank if this is the case.\n\nExtraction Fields:\n\n   - \"Policy - Allocated Expense Reserves\": currency. The funds earmarked for anticipated future claim-specific expenses under the policy. This represents the projected liability for allocated expenses (such as investigation or administrative costs) that have not yet been incurred.\n   - \"Policy - Allocated Expenses Paid\": currency. The total payments made for direct, claim-specific expenses under the policy. This covers actual disbursements for costs like investigations or administrative fees that have already been incurred.\n   - \"Policy - Carrier\": string. The licensed insurance company that issues the policy, assumes contractual risk, and pays covered claims (distinct from agents, brokers, MGAs, or TPAs). Normalize to the carrier's full legal name as filed with regulators (use the NAIC-issued name when present). Expand acronyms and trade names (e.g., \"AFICA\" to \"Accident Fund Insurance Company of America\"; \"State Fund\" to \"State Compensation Insurance Fund\"). For non-admitted / surplus-lines insurers, record the non-admitted carrier's legal name. Fronting or \"paper\" carriers, capture the issuing carrier on whose paper the policy is written, even if a captive or reinsurer ultimately bears the risk. Layered programmes, if multiple carriers appear, list the carrier specific to that loss-run entry. Accept synonyms such as insurer, insurance company, writing company, underwriting company; reject terms referring to intermediaries.\n   - \"Policy - Current Experience Mod\": number. A ratio factor used to adjust premiums based on the insured's historical loss experience relative to an industry benchmark. A value of 1.0 indicates average experience; values below 1.0 suggest favorable experience (lower risk) and above 1.0 indicate less favorable experience. This is expressed as a decimal rather than a percentage. This is specific to Workers Compensation policies and should not appear in other lines of business.\n   - \"Policy - Expiration Date\": date. The calendar date on which the policy term ends and coverage ceases. If the policy is cancelled mid-term, record the cancellation effective date (flat, pro-rata, or short-rate) in place of the scheduled expiration. Ignore binder expirations, automatic-renewal placeholders, retroactive dates, extended-reporting (\"tail\") periods, non-renewal notice dates, and policy-year ranges unless the document states they replace the original expiration. Extract only a date explicitly labelled \"expiration,\" \"expiry,\" or \"cancellation effective.\" Do not infer.\n   - \"Policy - Inception Date\": date. The exact calendar date on which the policy first becomes contractually in force. Record only the date explicitly labeled as \"inception,\" \"effective,\" or \"policy start\"; ignore binder dates, retroactive dates, search dates, endorsement effective dates, renewal/anniversary dates, and policy-year ranges unless the document states they replace the original inception. If multiple coverages are listed, choose the inception date that applies to this specific loss-run entry. Do not infer this value\u2014capture it only when plainly stated.\n   - \"Policy - Indemnity Paid\": currency. The total sum of cash benefit payments made to the insured or beneficiaries under the policy to compensate for losses or damages.\n   - \"Policy - Indemnity Reserves\": currency. The funds set aside for anticipated future indemnity payments related to claim settlements. It reflects the insurer's projected future liability for indemnity claims.\n   - \"Policy - Line of Business\": categorical. The categorical designation of the insurance coverage provided by the policy. It must be selected from a fixed, predefined list (Auto, Aviation, Boiler & Machinery, BOP, Cargo, Crime/Fidelity, Cyber, D&O, E&O, EPLI, GL, Inland Marine, Marine, Package, Property, Umbrella, WC & EL). Map any synonym, trade name, or emerging term to one standard LOB (e.g., \"Comp\" to \"WC & EL\"; \"Management Liability - D&O\" to \"D&O\"). For multi-coverage or package policies, pick the LOB explicitly stated for the loss-run entry; default to the dominant coverage if multiple are listed. Surplus-lines or non-admitted forms still map to the same parent LOB. If the LOB is not explicitly stated, use the most appropriate term from the list. If the LOB cannot be determined, leave it blank.\n   - \"Policy - Medical Reserves\": currency. The funds reserved for anticipated future medical expenses under the policy. This represents the insurer's estimated liability for medical costs that have been incurred but not yet paid.\n   - \"Policy - Named Insured\": string. The primary individual or organization explicitly named on the policy. This party is entitled to the policy benefits and is responsible for its obligations. If multiple names are present, list them separated by semicolons. Preserve the text exactly as it appears in the document. Exclude additional or contingent insured parties.\n   - \"Policy - Policy Number\": string. The exact alphanumeric string the carrier assigns to the contract, including any prefixes, dashes, or renewal/location suffixes (\"-00\", \"-01\", \"A\", etc.). Accept labels such as \"Policy No.\", \"Policy ID\", \"SAI\", \"Certificate Policy #\", or the unlabeled number on a dec-page/COI line. Exclude group or member IDs, claim numbers, quote/binder numbers, and ACORD certificate numbers unless the document states they are the final policy number. Preserve original formatting (capitalisation, punctuation, leading zeros). Do not infer or re-format\u2014record only an explicitly stated policy number.\n   - \"Policy - Policy Year\": number. The 4-digit calendar year in which the policy's coverage period begins. The policy year is the first 12 months starting on the policy's effective date; it need not match the calendar year. If the term is shorter or longer than 12 months (short-term, multi-year, or stub periods), still use the start year. When the source shows a range (e.g., \"2023-24\"), capture the first year (\"2023\"). Recognize synonyms such as \"coverage year,\" \"policy cycle,\" or \"policy period\" but do not confuse with accident year, calendar year, or health-plan year.\n   - \"Policy - Recoveries\": currency. The total amount recouped by the insurer from third parties (e.g., through subrogation or reinsurance) to offset claim costs. It represents money recovered after claims settlement.\n   - \"Policy - Total Claims\": number. The overall count of claims reported under the policy, including both open and closed claims. This provides an at-a-glance summary of claim activity. If only open and closed counts are provided, the total claims count is the sum of these two. If no counts are provided, do not attempt to calculate the total claims from the individual claims.\n   - \"Policy - Total Closed Claims\": number. The number of claims under the policy that have been fully processed and resolved (settled or denied), marking them as closed. If no counts are provided, do not attempt to calculate the total closed claims from the individual claims.\n   - \"Policy - Total Incurred\": currency. A net measure of the insurer's overall exposure under the policy, calculated as Total Paid plus Total Reserve minus Recoveries. This figure reflects the insurer's effective financial liability after accounting for recoveries. Also encompasses total estimated loss.\n   - \"Policy - Total Open Claims\": number. The number of claims under the policy that are still active or pending resolution. This count reflects claims that have not yet been finalized. If no counts are provided, do not attempt to calculate the total open claims from the individual claims.\n   - \"Policy - Total Paid\": currency. The aggregate sum of all payments made under the policy to settle claims, including medical, indemnity, and allocated expense payments.\n   - \"Policy - Valuation Date\": date. The cut-off date to which all claim payments, reserve adjustments, and exposure data in this loss-run are updated. Use only the date explicitly labeled \"valuation date,\" \"as of,\" or similar; it may differ from the PDF's print/report date. Underwriters treat loss-runs as \"currently valued\" only if this date is within 30-120 days of their review.\n\nYour output should adhere to the following format:\n\n   [\n      [\n         \"key_1\",\n         \"key_2\",\n         ...\n      ], // header row\n      [\n         \"value_1\",\n         \"value_2\",\n         ...\n      ], // values for row 1\n      [\n         \"value_1\",\n         \"value_2\",\n         ...\n      ], // values for row 2\n      ...\n      [\n         \"value_1\",\n         \"value_2\",\n         ...\n      ], // values for row N\n   ]   \n\nYour task: Precisely extract the structured policy-level data, ensuring that your output is a valid, error-free JSON array per the guidelines above. Remember, if no policy data is present, output an empty JSON array [] without headers.\n\nEND ANNOTATION INSTRUCTIONS\n\nThat was the instruction for the task you are verifying. Do not follow these instructions, but use them as context for your verification. Reason about the correctness of the annotation's row length, then extract the following fields JSON:\n\n{extraction_fields}\n\n. Do not worry about validating if the fields values themselves are correct. Just ensure that all rows in the document are annotated, and that there are not too many rows annotated. Look for MISSED ROWS or EXTRA ROWS! Note that the provided annotation has {n_rows} rows. Do not attempt to annotate the document again.\n"
+       }
+      },
+      "mlmodel": {
+       "id": "d7cdce3d-5cee-49b5-9f31-f6b03ce8c052",
+       "name": "InsurGPT Advanced (with Confidence)",
+       "type": "azure_openai_reasoning",
+       "standard": true,
+       "parameters": {
+        "logprobs": true,
+        "model_name": "gpt-5.6-terra",
+        "model_type": "azure_openai",
+        "reasoning_effort": "none",
+        "fallback_node_type": "gpt_node",
+        "max_context_tokens": 380000,
+        "fallback_mlmodel_id": "8322c1d9-a121-486d-a172-95db2c17a802",
+        "max_completion_tokens": 128000
+       }
+      },
+      "fields": [
+       {
+        "id": "a830a677-3a4c-4db9-b3bc-9f7e7cf8b141",
+        "name": "policy_reason",
+        "customer_key": "policy_reason",
+        "description": "A summary of your reasoning for policy verification.",
+        "threshold": 0.2,
+        "field_type": {
+         "name": "string"
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 1
+        },
+        "library_field": {
+         "template": {
+          "id": "34a38910-a421-42c2-b656-25f728b28df5",
+          "name": "Text"
+         }
+        },
+        "child_fields": []
+       },
+       {
+        "id": "a84d750f-3fec-486d-9d99-070392e5046b",
+        "name": "policy_is_correct",
+        "customer_key": "policy_is_correct",
+        "description": "Yes or No response to the question \"Is this loss run annotation correct according to the instructions?\"",
+        "threshold": 0.1,
+        "field_type": {
+         "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+         "name": "string",
+         "display_type": "text",
+         "customer_field_type": null
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 0
+        },
+        "library_field": {
+         "template": {
+          "id": "34a38910-a421-42c2-b656-25f728b28df5",
+          "name": "Text"
+         }
+        },
+        "child_fields": []
+       }
+      ]
+     },
+     {
+      "id": "f6afda7e-eda2-46c9-9856-2c7ee3ef7788",
+      "name": "Loss Runs Claims Table",
+      "type": "code_node",
+      "parameters": {
+       "function": "tables.chunking.process",
+       "prompt_format": "list",
+       "prompt_template": {
+        "ai": "\n{output}\n",
+        "human": "\nHere is the text of the loss run:\n< Document >\n{text}\n</ Document >\n",
+        "system": "\nYou are a knowledgeable insurance administrator with deep expertise in loss runs analysis and annotation.\nYour task is to extract structured, claim-level data from loss run reports using the guidelines and data model provided below.\nEach loss run may include multiple claims; ensure that each claim is uniquely and accurately represented.\n\nLoss Run Context:\nA loss run report details the claims history and policy information within an insurance portfolio.\nYour extraction should focus solely on claim-level data and ignore policy-specific details.\n\nInstructions:\n\n1. Output Format:\n   - Return a valid JSON array of arrays (a Python list of lists).\n   - When extracting data, the first sub-array must contain the column headers as defined by the extraction fields in the order they appear below.\n   - Each subsequent sub-array must contain the corresponding values for a single claim, aligned with the headers. Do not output more or less than the columns specified.\n   - Output only the JSON without any additional commentary. Do not include any other text or explanations.\n   - If the input document does not contain any claim data, output an empty JSON array `[]`. Do not output the headers in this case.\n   - Never provide commentary, explanations, or any other text outside of the JSON array.\n\n2. Data Handling & Formatting:\n   - Ensure every row aligns with the headers exactly. Never output too many or too few columns.\n   - Dates must be formatted as month/day/year without leading zeros (e.g., 3/2/2025 using '%-m/%-d/%Y').\n   - Present numeric values as raw decimals (exclude commas and currency symbols).\n   - For any missing or inapplicable field, output an empty string \"\" (do not use \"null\" or \"N/A\"). be sure to include the columns claim_claimant_name and claim_policy_number, even if they have no values. \n   - If a field contains multiple string values (e.g., multiple claimants), concatenate them with a semicolon (;) and a space (e.g., \"John Doe; Jane Smith\") in the order they appear in the text.\n   - For numeric fields with multiple values (e.g., multiple payments), use the math tag format:\n         <MATH>arg_1 op_1 arg_2 op_2 ... op_(n-1) arg_n</MATH>\n         (where each op is either + or -, and each arg is a real number found in the text)\n         Example: <MATH>100 + 200 - 50</MATH>\n   - As much as possible, preserve all textual data exactly as it appears.\n\n3. Domain-Specific Guidelines:\n   - Strictly adhere to the provided extraction field definitions below.\n   - Map varied terminology from different carriers/lines of business accurately to the defined fields. For instance:\n         - Use \"The Hartford Insurance Group\" instead of \"Hartford\".\n         - Use \"The Travelers Companies\" instead of \"Travelers\".\n         - Use \"E&O\" instead of \"Medical Malpractice\" or \"Professional Liability\".\n   \n4. Line of Business Definitions (use these exact terms when classifying the line of business):\n   - **Accident & Health**: First-party insurance that pays specified benefits for accidental injury, sickness, disability, or accidental death. Often written on a blanket or group basis for participants, students, volunteers, athletes, travelers, or employees outside the scope of Workers' Comp.\n   - **Auto**: Auto insurance covers risks of vehicle ownership and operation, including Auto Liability (third-party injury/property damage) and Auto Physical Damage (repair or replacement of the insured vehicle). \n   - **Aviation**: Covers risks of operating aircraft-hull damage and liability for injuries/property damage to passengers, third parties, or during ground operations.\n   - **Boiler & Machinery**: Covers repair/replacement of equipment or machinery damaged by mechanical breakdown, electrical failure, or explosions, and may cover resulting business interruption.\n   - **BOP**: A Business Owner's Policy bundles property and general liability coverages for small businesses, often adding tailored protections.\n   - **Cargo**: Protects goods in transit (sea, air, or land) against loss or damage, preserving shipment value.\n   - **Crime/Fidelity**: Protects against financial loss from theft, fraud, forgery, or embezzlement by employees or outsiders; fidelity focuses on employee dishonesty.\n   - **Cyber**: Covers technology-related risks such as data breaches, cyber-attacks, and associated costs (notification, investigation, legal, business interruption).\n   - **D&O**: Protects directors and officers against lawsuits alleging mismanagement, breach of fiduciary duty, or other wrongful acts.\n   - **E&O**: Errors & Omissions (professional liability) insurance shields professionals from claims of negligence, inadequate work, or failure to perform services.\n   - **EPLI**: Employment Practices Liability Insurance covers claims from workplace issues like discrimination, harassment, wrongful termination, or retaliation.\n   - **GL**: General Liability insurance covers bodily injury, property damage, and personal/advertising injury arising from routine business operations.\n   - **Inland Marine**: Covers goods transported over land and mobile/specialized property in temporary storage, protecting against theft or transit damage.\n   - **Marine**: Marine insurance covers risks on oceans or inland waterways for vessels and cargo, including hull damage and liabilities from pollution or collisions.\n   - **Package**: Package insurance combines multiple coverages (property, liability, etc.) into one tailored policy-distinct from an umbrella policy that only adds excess limits. Policies can have a Package LOB, but claims should be classified under the specific LOB.\n   - **Property**: Property insurance protects buildings, equipment, and inventory from perils like fire, theft, and natural disasters.\n   - **Umbrella**: Umbrella insurance provides excess liability coverage above underlying policy limits, filling gaps for large or catastrophic claims.\n   - **WC & EL**: Workers' Compensation (WC) insurance covers job-related injuries, while Employers' Liability (EL) protects against lawsuits from those injuries.\n   - **None**: Placeholder when no Line of Business is present and cannot be inferred from context. Leave blank if this is the case.\n\nExtraction Fields:\n{extraction_fields}\n\nYour task: Precisely extract the structured claim-level data, ensuring that your output is a valid, error-free JSON array per the guidelines above. Remember, if no claim data is present, output an empty JSON array [] without headers.\n"
+       }
+      },
+      "mlmodel": {
+       "id": "24802eea-6e56-4beb-9eb1-a1f7af9c5f45",
+       "name": "IGPT Loss Runs Pro",
+       "type": "finetuned_streaming",
+       "standard": true,
+       "parameters": {
+        "url": "https://model-wnpvjld3.api.baseten.co/environments/production/sync/v1",
+        "max_tokens": 28672,
+        "model_name": "unsloth/Qwen3.5-27B",
+        "model_type": "finetuned_streaming",
+        "fallback_node_type": "gpt_node",
+        "max_context_tokens": 32700,
+        "fallback_mlmodel_id": null,
+        "max_completion_tokens": 16384
+       }
+      },
+      "fields": [
+       {
+        "id": "90aa2da7-f5c8-4229-8fd8-e46367df5874",
+        "name": "Loss Runs Claims Table",
+        "customer_key": "loss_runs_claims_table",
+        "description": "description for table",
+        "threshold": 0.5,
+        "field_type": {
+         "id": "fd28a393-eb1c-4af8-8920-caf5132b5692",
+         "name": "table",
+         "display_type": "multiselect",
+         "customer_field_type": null
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 0
+        },
+        "library_field": {
+         "template": {
+          "id": "f80f5cfa-d13d-4256-bf68-fbc6fe10f58f",
+          "name": "Table"
+         }
+        },
+        "child_fields": [
+         {
+          "id": "352d89d6-326e-49ab-bb98-c474f3757670",
+          "name": "Claim - Claim Type",
+          "customer_key": "claim_claim_type",
+          "description": "A specific categorization of the claim derived from analyzing payment details, coverage descriptions, and any relevant labels (such as \"Notes\" or \"Cause of Loss\"). This field should indicate the precise type of claim (e.g., Medical, Indemnity, Property Damage, Liability, or Rehabilitation) based on the provided data. In ambiguous cases, select the claim type that is most consistently supported by the available information, ignoring broader categorizations like overall Line of Business unless directly indicated.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 1
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "6f775a58-41f9-487e-bb5d-4571bddc9135",
+          "name": "Claim - Accident State",
+          "customer_key": "claim_accident_state",
+          "description": "The U.S. state in which the loss or incident occurred. This should be represented as a two-letter abbreviation (e.g., \"CA\" for California) to provide geographical context for the claim.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 3
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "90f877dd-81ab-439e-9724-d913ff9f3018",
+          "name": "Claim - Total Paid",
+          "customer_key": "claim_total_paid",
+          "description": "The aggregate sum of all payments made to settle the claim, including payments for indemnity, medical expenses, and allocated expenses.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 11
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "1a8c4b4d-090e-482a-b914-c8efcde3f589",
+          "name": "Claim - Allocated Expenses Paid",
+          "customer_key": "claim_allocated_expenses_paid",
+          "description": "The total amount of claim-specific allocated expenses that have already been paid. This covers direct disbursements for expenses like investigations or administrative fees.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 8
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "3912fdce-578c-4cb2-b11d-c3f545d51bf2",
+          "name": "Claim - Claimant Name",
+          "customer_key": "claim_claimant_name",
+          "description": "The complete, unabridged name of the individual or organization submitting the claim or identified as the recipient of claim benefits\u2014i.e., the party seeking compensation. Note that in some cases (e.g., medical malpractice claims) the claimant may be different from the insured or defendant. If multiple claimants are listed, join their names with semicolons and preserve the exact formatting from the document.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 17
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "c4e65c53-5dc9-4889-b7d1-3d4ebadb554b",
+          "name": "Claim - Is First Party",
+          "customer_key": "claim_is_first_party",
+          "description": "A boolean describing if the claim is first party or not. First party claims mean that the claimant is the insured. Can be determined from accident/loss description and claim coverage. Write as either True or False.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 28
+          },
+          "library_field": {
+           "template": {}
+          },
+          "child_fields": []
+         },
+         {
+          "id": "0f101a5e-8bbe-423a-b020-d0f1d2ee95ec",
+          "name": "Claim - Total Incurred",
+          "customer_key": "claim_total_incurred",
+          "description": "A net measure of the overall cost of the claim to the insurer, calculated as the sum of total payments made (Total Paid) plus the total reserves (Total Reserve) minus any recoveries.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 21
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "e45a1074-3705-46a1-b5c0-4f7676639bc2",
+          "name": "Claim - Indemnity Paid",
+          "customer_key": "claim_indemnity_paid",
+          "description": "The total cash benefit payments made to the claimant under the claim, compensating for losses or damages. This value represents the actual amount disbursed.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 6
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "ec6813b2-4409-4d96-8d73-8891dce33c78",
+          "name": "Claim - Claim Number",
+          "customer_key": "claim_claim_number",
+          "description": "A unique alphanumeric identifier assigned to a claim for tracking purposes. It distinguishes this claim from others and may include letters, symbols, or hyphens. Preserve the exact formatting from the source document and map any variations (e.g., 'Claim ID') to this field.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 16
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "baa48103-268c-4831-b48a-e5805752817c",
+          "name": "Claim - Loss Paid",
+          "customer_key": "claim_loss_paid",
+          "description": "Aggregate of all payments made on the claim, excluding expenses.",
+          "threshold": 0.2,
+          "field_type": {
+           "id": "2d874b48-a3a8-4d71-99b8-6e892e12dac8",
+           "name": "number",
+           "display_type": "number",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 24
+          },
+          "library_field": {
+           "template": {}
+          },
+          "child_fields": []
+         },
+         {
+          "id": "e314c009-bf03-46b8-b497-d01ab89962e1",
+          "name": "Claim - Total Reserve",
+          "customer_key": "claim_total_reserve",
+          "description": "The total funds reserved for future payments related to the claim. This is calculated as the sum of the medical reserves, allocated expense reserves, and indemnity reserves, representing the projected future liabilities.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 23
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "4fcfad41-8258-4d0b-849a-1d97d34e48c7",
+          "name": "Claim - Date of Incident",
+          "customer_key": "claim_date_of_incident",
+          "description": "The date on which the incident or injury occurred that led to the claim. Also known as the 'date of loss (DOL)' or 'accident date', this field is essential for establishing the timeline of the loss event. Extract only the explicitly provided date and convert it to the standard format (month/day/year without leading zeros using '%-m/%-d/%Y').",
+          "threshold": 0.3,
+          "field_type": {
+           "id": "942b55ad-a295-4e12-83d4-0ad37eefde0a",
+           "name": "date",
+           "display_type": "date",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 2
+          },
+          "library_field": {
+           "template": {
+            "id": "ccdf9d8f-ca26-47a9-890a-95a53f74fcd4",
+            "name": "Date"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "7a9d8b0b-839e-4030-b018-85a9e97769e8",
+          "name": "Claim - Nature of Injury",
+          "customer_key": "claim_nature_of_injury",
+          "description": "A concise description of the type or nature of the injury sustained by the insured. This field focuses on what or where the injury occurred and is distinct from the more detailed accident description.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 4
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "e1cda8c0-9aa8-46b9-b51f-b9475cfcd9ce",
+          "name": "Claim - Indemnity Reserves",
+          "customer_key": "claim_indemnity_reserves",
+          "description": "The funds set aside for anticipated future indemnity payments related to the claim. This projection represents the insurer\\'s estimated future liability for indemnity claims.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 7
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "3942fadd-1bbe-4312-a51f-4dea7a6cf0cf",
+          "name": "Claim - Line of Business",
+          "customer_key": "claim_line_of_business",
+          "description": "The categorical designation of the insurance coverage provided by the policy. It must be selected from a fixed, predefined list (e.g., Auto, Aviation, Boiler & Machinery, BOP, Cargo, Crime/Fidelity, Cyber, D&O, E&O, EPLI, GL, Inland Marine, Marine, Package, Property, Umbrella, WC & EL, etc.), ensuring that varied terminology in source documents is normalized to one of these standard categories.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 22
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "5a44628c-a014-4555-ba4d-ccf9dbe650f4",
+          "name": "Claim - Loss Reserve",
+          "customer_key": "claim_loss_reserve",
+          "description": "Total projected liability for future payments. The sum of all reserves, excluding expenses. Do not subtract recoveries here.",
+          "threshold": 0.2,
+          "field_type": {
+           "id": "2d874b48-a3a8-4d71-99b8-6e892e12dac8",
+           "name": "number",
+           "display_type": "number",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 25
+          },
+          "library_field": {
+           "template": {}
+          },
+          "child_fields": []
+         },
+         {
+          "id": "6824ae6a-20a0-44f9-9e5a-d9a7b9be0a1b",
+          "name": "Claim - Policy Year",
+          "customer_key": "claim_policy_year",
+          "description": "The 4-digit calendar year in which the policy's coverage period begins. The policy year is the first 12 months starting on the policy's effective date; it need not match the calendar year. If the term is shorter or longer than 12 months (short-term, multi-year, or stub periods), still use the start year. When the source shows a range (e.g., \\\"2023-24\\\"), capture the first year (\\\"2023\\\"). Recognize synonyms such as \\\"coverage year,\\\" \\\"policy cycle,\\\" or \\\"policy period,\\\" but do not confuse with accident year, calendar year, or health-plan year.",
+          "threshold": 0.2,
+          "field_type": {
+           "id": "2d874b48-a3a8-4d71-99b8-6e892e12dac8",
+           "name": "number",
+           "display_type": "number",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 13
+          },
+          "library_field": {
+           "template": {
+            "id": "588f9757-1523-4da7-81e6-c6cb982e7ef2",
+            "name": "Number"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "825973a1-eff7-4e9e-abd1-59c72552b522",
+          "name": "Claim - Claim Reported Date",
+          "customer_key": "claim_claim_reported_date",
+          "description": "The date on which the claim was reported to the insurer. Also referred to by various labels such as \"received,\" \"notice date,\" \"date reported,\" \"report,\" or \"first aware date,\" it marks the initial notification of the loss event.",
+          "threshold": 0.3,
+          "field_type": {
+           "id": "942b55ad-a295-4e12-83d4-0ad37eefde0a",
+           "name": "date",
+           "display_type": "date",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 18
+          },
+          "library_field": {
+           "template": {
+            "id": "ccdf9d8f-ca26-47a9-890a-95a53f74fcd4",
+            "name": "Date"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "8fd23029-5b3b-44dd-889b-762c24468ca4",
+          "name": "Claim - Claimant Closed Date",
+          "customer_key": "claim_claimant_closed_date",
+          "description": "For claims that are closed, this is the date the claim was finalized. Also known as 'closed', 'close date', or 'date closed', it indicates when the claim was resolved. Extract only the explicitly provided date and convert it to the standard format (month/day/year without leading zeros using '%-m/%-d/%Y').",
+          "threshold": 0.3,
+          "field_type": {
+           "id": "942b55ad-a295-4e12-83d4-0ad37eefde0a",
+           "name": "date",
+           "display_type": "date",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 19
+          },
+          "library_field": {
+           "template": {
+            "id": "ccdf9d8f-ca26-47a9-890a-95a53f74fcd4",
+            "name": "Date"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "6d5af870-1d45-4793-9656-b59ab412b3cb",
+          "name": "Claim - Accident Description",
+          "customer_key": "claim_accident_description",
+          "description": "A long-form, textual description of what occurred during the loss event. This field should capture details on what happened, why it happened, and how the incident unfolded.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 0
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "8b5642b3-cfe6-4a5d-8a82-bc43acb84e97",
+          "name": "Claim - Medical Reserves",
+          "customer_key": "claim_medical_reserves",
+          "description": "The funds reserved for anticipated future medical expenses related to the claim. This field represents the insurer\\'s estimated liability for medical costs incurred but not yet paid.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 5
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "9d01241b-d5db-4395-874e-fdf5ff585994",
+          "name": "Claim - Recoveries",
+          "customer_key": "claim_recoveries",
+          "description": "The total amount recovered by the insurer from third parties (via subrogation or reinsurance) to offset the costs incurred in settling the claim.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 10
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "9b7fbcab-7b7d-4df8-806c-9638dcc7c657",
+          "name": "Claim - Status",
+          "customer_key": "claim_status",
+          "description": "The current state or progress of the claim, indicating whether it is open, closed, or in another status (such as re-opened, disability, or non-litigated).",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 20
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "fc7c2c93-e6cf-496c-8760-dbd82cd2046f",
+          "name": "Claim - Allocated Expense Reserves",
+          "customer_key": "claim_allocated_expense_reserves",
+          "description": "The funds reserved for anticipated future claim-specific expenses related to processing and managing the claim. This includes the projected liability for expenses such as investigations or administrative cost.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 9
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "9bb80953-5562-41ba-8545-901adf118870",
+          "name": "Claim - Paid Medical",
+          "customer_key": "claim_paid_medical",
+          "description": "The total amount of medical expenses that have already been paid for the claim.",
+          "threshold": 0.9,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 12
+          },
+          "library_field": {
+           "template": {
+            "id": "c04f2ec4-beec-420e-9a62-ecaff369c23e",
+            "name": "Currency"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "81fe4fc0-53ec-4395-9fd2-f7f41ed65225",
+          "name": "Claim - Coverage",
+          "customer_key": "claim_coverage",
+          "description": "The coverage of the policy under which the claim falls. Leave blank if the policy is not a package. If the policy is a package, use the loss description and claim type to infer the coverage (i.e., Collision claim type under BOP line of business means a coverage type of Auto).\n\nCommon Naming Variants:\n\nAULI - Auto Liability",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 26
+          },
+          "library_field": {
+           "template": {}
+          },
+          "child_fields": []
+         },
+         {
+          "id": "b1e8677f-79cf-4223-8298-bb329abce2dc",
+          "name": "Claim - Carrier",
+          "customer_key": "claim_carrier",
+          "description": "The licensed insurance company that issues the policy, assumes contractual risk, and pays covered claims (distinct from agents, brokers, MGAs, or TPAs). Normalize to the carrier's full legal name as filed with regulators (use the NAIC-issued name when present). Expand acronyms and trade names (e.g., \\\"AFICA\\\" \u2192 \\\"Accident Fund Insurance Company of America\\\"; \\\"State Fund\\\" \u2192 \\\"State Compensation Insurance Fund\\\"). Handle corner cases: \u2022 Non-admitted / surplus-lines insurers - record the non-admitted carrier's legal name. \u2022 Fronting or \\\"paper\\\" carriers - capture the issuing carrier on whose paper the policy is written, even if a captive or reinsurer ultimately bears the risk. \u2022 Layered programmes - if multiple carriers appear, list the carrier specific to that loss-run entry. Accept synonyms such as insurer, insurance company, writing company, underwriting company; reject terms referring to intermediaries.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 14
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         },
+         {
+          "id": "41c02802-80e9-4bbb-aca6-682283395913",
+          "name": "Claim - Insured Driver",
+          "customer_key": "claim_insured_driver",
+          "description": "The driver covered under the Auto policy or Auto coverage of a Package policy. Insured Driver is not always the same as Insured Name, which could be a business. Insured Driver is not always the same as Claimant Name, and the difference can be determined by Claim Type.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 27
+          },
+          "library_field": {
+           "template": {}
+          },
+          "child_fields": []
+         },
+         {
+          "id": "ed650991-eca9-46fc-9e1a-60bef03a34b2",
+          "name": "Claim - Policy Number",
+          "customer_key": "claim_policy_number",
+          "description": "The exact alphanumeric string the carrier assigns to the contract, including any prefixes, dashes, or renewal/location suffixes (\\\"-00\\\", \\\"-01\\\", \\\"A\\\", etc.). Accept labels such as \\\"Policy No.\\\", \\\"Policy ID\\\", \\\"SAI\\\", \\\"Certificate Policy #\\\", or the unlabeled number on a dec-page/COI line. Exclude group or member IDs, claim numbers, quote/binder numbers, and ACORD certificate numbers unless the document states they are the final policy number. Preserve original formatting (capitalization, punctuation, leading zeros). Do not infer or re-format\u2014record only an explicitly stated policy number.",
+          "threshold": 0.1,
+          "field_type": {
+           "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+           "name": "string",
+           "display_type": "text",
+           "customer_field_type": null
+          },
+          "field_display": {
+           "placeholder_text": null,
+           "minimum_value": null,
+           "maximum_value": null,
+           "date_format": null,
+           "number_of_rows": null,
+           "options": null,
+           "sort_order": 15
+          },
+          "library_field": {
+           "template": {
+            "id": "34a38910-a421-42c2-b656-25f728b28df5",
+            "name": "Text"
+           }
+          },
+          "child_fields": []
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "id": "d59e86ee-2c07-4898-b1c8-c8b1d1427365",
+      "name": "Loss Runs Claims Verifier",
+      "type": "code_node",
+      "parameters": {
+       "function": "verifiers.verify_table.process",
+       "table_key": "loss_runs_claims_table",
+       "table_fields": [
+        {
+         "name": "claim_accident_description",
+         "type": "string"
+        },
+        {
+         "name": "claim_accident_state",
+         "type": "string"
+        },
+        {
+         "name": "claim_indemnity_paid",
+         "type": "currency"
+        },
+        {
+         "name": "claim_indemnity_reserves",
+         "type": "currency"
+        },
+        {
+         "name": "claim_allocated_expenses_paid",
+         "type": "currency"
+        },
+        {
+         "name": "claim_allocated_expense_reserves",
+         "type": "currency"
+        },
+        {
+         "name": "claim_recoveries",
+         "type": "currency"
+        },
+        {
+         "name": "claim_policy_year",
+         "type": "number"
+        },
+        {
+         "name": "claim_carrier",
+         "type": "string"
+        },
+        {
+         "name": "claim_policy_number",
+         "type": "string"
+        },
+        {
+         "name": "claim_claim_reported_date",
+         "type": "date"
+        },
+        {
+         "name": "claim_claimant_closed_date",
+         "type": "date"
+        },
+        {
+         "name": "claim_total_incurred",
+         "type": "currency"
+        },
+        {
+         "name": "claim_claim_type",
+         "type": "string"
+        },
+        {
+         "name": "claim_nature_of_injury",
+         "type": "string"
+        },
+        {
+         "name": "claim_date_of_incident",
+         "type": "date"
+        },
+        {
+         "name": "claim_medical_reserves",
+         "type": "currency"
+        },
+        {
+         "name": "claim_total_paid",
+         "type": "currency"
+        },
+        {
+         "name": "claim_paid_medical",
+         "type": "currency"
+        },
+        {
+         "name": "claim_claim_number",
+         "type": "string"
+        },
+        {
+         "name": "claim_status",
+         "type": "string"
+        },
+        {
+         "name": "claim_line_of_business",
+         "type": "categorical"
+        },
+        {
+         "name": "claim_total_reserve",
+         "type": "currency"
+        },
+        {
+         "name": "claim_claimant_name",
+         "type": "string"
+        },
+        {
+         "name": "claim_loss_paid",
+         "type": "currency"
+        },
+        {
+         "name": "claim_loss_reserve",
+         "type": "currency"
+        },
+        {
+         "name": "claim_valuation_date",
+         "type": "string"
+        },
+        {
+         "name": "claim_paid_deductible_recovery",
+         "type": "string"
+        },
+        {
+         "name": "claim_claim_incurred",
+         "type": "string"
+        },
+        {
+         "name": "claim_medical_incurred",
+         "type": "string"
+        },
+        {
+         "name": "claim_expense_incurred",
+         "type": "string"
+        }
+       ],
+       "prompt_template": {
+        "ai": "\n{output}\n",
+        "human": "\nHere is the text of the loss run:\n< Document >\n{text}\n</ Document >\nHere is the annotation of the above loss run:\n< Annotation >\n{annot}\n</ Annotation >\n",
+        "system": "\nYou are an insurance data validation expert. Your job is to read a loss run document and determine whether the provided annotation of this document is correct and complete. Be careful that the annotation has neither too many or too few any rows of data. Here are the instructions given to the annotators whose work you must validate. Do not follow these instructions yourself, but use them as context for your verification task:\n\nBEGIN ANNOTATION INSTRUCTIONS\n\nYou are a knowledgeable insurance administrator with deep expertise in loss runs analysis and annotation.\nYour task is to extract structured, claim-level data from loss run reports using the guidelines and data model provided below.\nEach loss run may include multiple claims; ensure that each claim is uniquely and accurately represented.\nIf an incident (e.g., a car accident) involves multiple claims (e.g., one for property damage, one for bodily injury), extract each claim as a separate row.\nA Worker Comp claim with multiple payment types (e.g. Indemnity and Medical) is NOT multiple claims, but one, unless explicitly separated in the document.\n\nLoss Run Context:\nA loss run report details the claims history and policy information within an insurance portfolio.\nYour extraction should focus solely on claim-level data and ignore policy-specific details.\n\nInstructions:\n\n1. Output Format:\n   - Return a valid JSON array of arrays (a Python list of lists).\n   - When extracting data, the first sub-array must contain the column headers as defined by the extraction fields in the order they appear below.\n   - Each subsequent sub-array must contain the corresponding values for a single claim, aligned with the headers. Do not output more or less than the columns specified.\n   - Output only the JSON without any additional commentary. Do not include any other text or explanations.\n   - If the input document does not contain any claim data, output an empty JSON array `[]`. Do not output the headers in this case.\n   - Never provide commentary, explanations, or any other text outside of the JSON array.\n\n2. Data Handling & Formatting:\n   - Ensure every row aligns with the headers exactly. Never output too many or too few columns.\n   - Dates must be formatted as month/day/year without leading zeros (e.g., 3/2/2025 using '%-m/%-d/%Y').\n   - Present numeric values as raw decimals (exclude commas and currency symbols).\n   - For any missing or inapplicable field, output an empty string \"\" (do not use \"null\" or \"N/A\").\n   - If a field contains multiple string values (e.g., multiple claimants), concatenate them with a semicolon (;) and a space (e.g., \"John Doe; Jane Smith\") in the order they appear in the text.\n   - For numeric fields with multiple values (e.g., multiple payments), use the math tag format:\n         <MATH>arg_1 op_1 arg_2 op_2 ... op_(n-1) arg_n</MATH>\n         (where each op is either + or -, and each arg is a real number found in the text)\n         Example: <MATH>100 + 200 - 50</MATH>\n   - As much as possible, preserve all textual data exactly as it appears.\n\n3. Domain-Specific Guidelines:\n   - Strictly adhere to the provided extraction field definitions below.\n   - Map varied terminology from different carriers/lines of business accurately to the defined fields. For instance:\n         - Use \"The Hartford Insurance Group\" instead of \"Hartford\".\n         - Use \"The Travelers Companies\" instead of \"Travelers\".\n         - Use \"E&O\" instead of \"Medical Malpractice\" or \"Professional Liability\".\n\n4. Line of Business Definitions (use these exact terms when classifying the line of business):\n   - **Accident & Health**: First-party insurance that pays specified benefits for accidental injury, sickness, disability, or accidental death. Often written on a blanket or group basis for participants, students, volunteers, athletes, travelers, or employees outside the scope of Workers' Comp.\n   - **Auto**: Auto insurance covers risks of vehicle ownership and operation, including Auto Liability (third-party injury/property damage) and Auto Physical Damage (repair or replacement of the insured vehicle). \n   - **Aviation**: Covers risks of operating aircraft-hull damage and liability for injuries/property damage to passengers, third parties, or during ground operations.\n   - **Boiler & Machinery**: Covers repair/replacement of equipment or machinery damaged by mechanical breakdown, electrical failure, or explosions, and may cover resulting business interruption.\n   - **BOP**: A Business Owner's Policy bundles property and general liability coverages for small businesses, often adding tailored protections.\n   - **Cargo**: Protects goods in transit (sea, air, or land) against loss or damage, preserving shipment value.\n   - **Crime/Fidelity**: Protects against financial loss from theft, fraud, forgery, or embezzlement by employees or outsiders; fidelity focuses on employee dishonesty.\n   - **Cyber**: Covers technology-related risks such as data breaches, cyber-attacks, and associated costs (notification, investigation, legal, business interruption).\n   - **D&O**: Protects directors and officers against lawsuits alleging mismanagement, breach of fiduciary duty, or other wrongful acts.\n   - **E&O**: Errors & Omissions (professional liability) insurance shields professionals from claims of negligence, inadequate work, or failure to perform services.\n   - **EPLI**: Employment Practices Liability Insurance covers claims from workplace issues like discrimination, harassment, wrongful termination, or retaliation.\n   - **GL**: General Liability insurance covers bodily injury, property damage, and personal/advertising injury arising from routine business operations.\n   - **Inland Marine**: Covers goods transported over land and mobile/specialized property in temporary storage, protecting against theft or transit damage.\n   - **Marine**: Marine insurance covers risks on oceans or inland waterways for vessels and cargo, including hull damage and liabilities from pollution or collisions.\n   - **Package**: Package insurance combines multiple coverages (property, liability, etc.) into one tailored policy-distinct from an umbrella policy that only adds excess limits. Policies can have a Package LOB, but claims should be classified under the specific LOB.\n   - **Property**: Property insurance protects buildings, equipment, and inventory from perils like fire, theft, and natural disasters.\n   - **Umbrella**: Umbrella insurance provides excess liability coverage above underlying policy limits, filling gaps for large or catastrophic claims.\n   - **WC & EL**: Workers' Compensation (WC) insurance covers job-related injuries, while Employers' Liability (EL) protects against lawsuits from those injuries.\n   - **None**: Placeholder when no Line of Business is present and cannot be inferred from context. Leave blank if this is the case.\n\nExtraction Fields:\n- \"Claim - Accident Description\": string. A long-form, textual description of what occurred during the loss event. This field should capture details on what happened, why it happened, and how the incident unfolded.\n- \"Claim - Paid Medical\": string. The total amount of medical expenses that have already been paid for the claim.\n- \"Claim - Medical Incurred\": string. Medical Incurred value\n- \"Claim - Expense Incurred\": string. Expense Incurred value\n- \"Claim - Claim Type\": string. A specific categorization of the claim derived from analyzing payment details, coverage descriptions, and any relevant labels (such as \"Notes\" or \"Cause of Loss\"). This field should indicate the precise type of claim (e.g., Medical, Indemnity, Property Damage, Liability, or Rehabilitation) based on the provided data. In ambiguous cases, select the claim type that is most consistently supported by the available information, ignoring broader categorizations like overall Line of Business unless directly indicated.\n- \"Claim - Accident State\": string. The U.S. state in which the loss or incident occurred. This should be represented as a two-letter abbreviation (e.g., \"CA\" for California) to provide geographical context for the claim.\n- \"Claim - Claimant Closed Date\": date. For claims that are closed, this is the date the claim was finalized. Also known as 'closed', 'close date', or 'date closed', it indicates when the claim was resolved. Extract only the explicitly provided date and convert it to the standard format (month/day/year without leading zeros using '%-m/%-d/%Y').\n- \"Claim - Nature of Injury\": string. A concise description of the type or nature of the injury sustained by the insured. This field focuses on what or where the injury occurred and is distinct from the more detailed accident description.\n- \"Claim - Total Reserve\": string. The total funds reserved for future payments related to the claim. This is calculated as the sum of the medical reserves, allocated expense reserves, and indemnity reserves, representing the projected future liabilities.\n- \"Claim - Loss Paid\": number. Aggregate of all payments made on the claim, excluding expenses.\n- \"Claim - Date of Incident\": date. The date on which the incident or injury occurred that led to the claim. Also known as the 'date of loss (DOL)' or 'accident date', this field is essential for establishing the timeline of the loss event. Extract only the explicitly provided date and convert it to the standard format (month/day/year without leading zeros using '%-m/%-d/%Y').\n- \"Claim - Allocated Expense Reserves\": string. The funds reserved for anticipated future claim-specific expenses related to processing and managing the claim. This includes the projected liability for expenses such as investigations or administrative cost.\n- \"Claim - Recoveries\": string. The total amount recovered by the insurer from third parties (via subrogation or reinsurance) to offset the costs incurred in settling the claim.\n- \"Claim - Policy Number\": string. The exact alphanumeric string the carrier assigns to the contract, including any prefixes, dashes, or renewal/location suffixes (\"-00\", \"-01\", \"A\", etc.). Accept labels such as \"Policy No.\", \"Policy ID\", \"SAI\", \"Certificate Policy #\", or the unlabeled number on a dec-page/COI line. Exclude group or member IDs, claim numbers, quote/binder numbers, and ACORD certificate numbers unless the document states they are the final policy number. Preserve original formatting (capitalization, punctuation, leading zeros). Do not infer or re-format\u2014record only an explicitly stated policy number.\n- \"Claim - Claim Number\": string. A unique alphanumeric identifier assigned to a claim for tracking purposes. It distinguishes this claim from others and may include letters, symbols, or hyphens. Preserve the exact formatting from the source document and map any variations (e.g., 'Claim ID') to this field.\n- \"Claim - Status\": string. The current state or progress of the claim, indicating whether it is open, closed, or in another status (such as re-opened, disability, or non-litigated).\n- \"Claim - Loss Reserve\": number. Total projected liability for future payments. The sum of all reserves, excluding expenses. Do not subtract recoveries here.\n- \"Claim - Allocated Expenses Paid\": string. The total amount of claim-specific allocated expenses that have already been paid. This covers direct disbursements for expenses like investigations or administrative fees.\n- \"Claim - Total Paid\": string. The aggregate sum of all payments made to settle the claim, including payments for indemnity, medical expenses, and allocated expenses.\n- \"Claim - Line of Business\": string. The categorical designation of the insurance coverage provided by the policy. It must be selected from a fixed, predefined list (e.g., Auto, Aviation, Boiler & Machinery, BOP, Cargo, Crime/Fidelity, Cyber, D&O, E&O, EPLI, GL, Inland Marine, Marine, Package, Property, Umbrella, WC & EL, etc.), ensuring that varied terminology in source documents is normalized to one of these standard categories.\n- \"Claim - Paid Deductible Recovery\": string. Paid deductible recovery amount. Must be an amount that specifically says that Paid Deductible Recovery.\n- \"Claim - Claim Incurred\": string. Claim Incurred value. Its column must say 'Claim'.\n- \"Claim - Medical Reserves\": string. The funds reserved for anticipated future medical expenses related to the claim. This field represents the insurer's estimated liability for medical costs incurred but not yet paid.\n- \"Claim - Indemnity Paid\": string. The total cash benefit payments made to the claimant under the claim, compensating for losses or damages. This value represents the actual amount disbursed.\n- \"Claim - Indemnity Reserves\": string. The funds set aside for anticipated future indemnity payments related to the claim. This projection represents the insurer's estimated future liability for indemnity claims.\n- \"Claim - Policy Year\": number. The 4-digit calendar year in which the policy's coverage period begins. The policy year is the first 12 months starting on the policy's effective date; it need not match the calendar year. If the term is shorter or longer than 12 months (short-term, multi-year, or stub periods), still use the start year. When the source shows a range (e.g., \"2023-24\"), capture the first year (\"2023\"). Recognize synonyms such as \"coverage year,\" \"policy cycle,\" or \"policy period,\" but do not confuse with accident year, calendar year, or health-plan year.\n- \"Claim - Claimant Name\": string. The complete, unabridged name of the individual or organization submitting the claim or identified as the recipient of claim benefits\u2014i.e., the party seeking compensation. Note that in some cases (e.g., medical malpractice claims) the claimant may be different from the insured or defendant. If multiple claimants are listed, join their names with semicolons and preserve the exact formatting from the document.\n- \"Claim - Claim Reported Date\": date. The date on which the claim was reported to the insurer. Also referred to by various labels such as \"received,\" \"notice date,\" \"date reported,\" \"report,\" or \"first aware date,\" it marks the initial notification of the loss event.\n- \"Claim - Total Incurred\": string. A net measure of the overall cost of the claim to the insurer, calculated as the sum of total payments made (Total Paid) plus the total reserves (Total Reserve) minus any recoveries.\n- \"Claim - Carrier\": string. The licensed insurance company that issues the policy, assumes contractual risk, and pays covered claims (distinct from agents, brokers, MGAs, or TPAs). Normalize to the carrier's full legal name as filed with regulators (use the NAIC-issued name when present). Expand acronyms and trade names (e.g., \"AFICA\" \u2192 \"Accident Fund Insurance Company of America\"; \"State Fund\" \u2192 \"State Compensation Insurance Fund\"). Handle corner cases: \u2022 Non-admitted / surplus-lines insurers - record the non-admitted carrier's legal name. \u2022 Fronting or \"paper\" carriers - capture the issuing carrier on whose paper the policy is written, even if a captive or reinsurer ultimately bears the risk. \u2022 Layered programmes - if multiple carriers appear, list the carrier specific to that loss-run entry. Accept synonyms such as insurer, insurance company, writing company, underwriting company; reject terms referring to intermediaries.\n- \"Claim - Valuation Date\": date. The cut-off date to which all claim payments, reserve adjustments, and exposure data in loss-run re updated. Use only the date explicitly labeled valuation date, as of, or similar; it may differ from PDF's print/report date.\n\nYour output should adhere to the following format:\n\n   [\n      [\n         \"key_1\",\n         \"key_2\",\n         ...\n      ], // header row\n      [\n         \"value_1\",\n         \"value_2\",\n         ...\n      ], // values for row 1\n      [\n         \"value_1\",\n         \"value_2\",\n         ...\n      ], // values for row 2\n      ...\n      [\n         \"value_1\",\n         \"value_2\",\n         ...\n      ], // values for row N\n   ] \n\nYour task: Precisely extract the structured claim-level data, ensuring that your output is a valid, error-free JSON array per the guidelines above. Remember, if no claim data is present, output an empty JSON array [] without headers.\n\nEND ANNOTATION INSTRUCTIONS\n\nThat was the instruction for the task you are verifying. Do not follow these instructions, but use them as context for your verification. Reason about the correctness of the annotation's row length, then extract the following fields as a JSON:\n\n{extraction_fields}\n\nDo not worry about validating if the fields values themselves are correct. Just ensure that all rows in the document are annotated, and that there are not too many rows annotated. Look for MISSED ROWS or EXTRA ROWS! Note that the provided annotation has {n_rows} rows. Do not attempt to annotate the document again.\n"
+       }
+      },
+      "mlmodel": {
+       "id": "d7cdce3d-5cee-49b5-9f31-f6b03ce8c052",
+       "name": "InsurGPT Advanced (with Confidence)",
+       "type": "azure_openai_reasoning",
+       "standard": true,
+       "parameters": {
+        "logprobs": true,
+        "model_name": "gpt-5.6-terra",
+        "model_type": "azure_openai",
+        "reasoning_effort": "none",
+        "fallback_node_type": "gpt_node",
+        "max_context_tokens": 380000,
+        "fallback_mlmodel_id": "8322c1d9-a121-486d-a172-95db2c17a802",
+        "max_completion_tokens": 128000
+       }
+      },
+      "fields": [
+       {
+        "id": "63068a68-1b6f-4a78-b09b-401c380a3b55",
+        "name": "claims_reason",
+        "customer_key": "claims_reason",
+        "description": "A summary of your reasoning for claims verification.",
+        "threshold": 0.1,
+        "field_type": {
+         "name": "string"
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 0
+        },
+        "library_field": {
+         "template": {
+          "id": "34a38910-a421-42c2-b656-25f728b28df5",
+          "name": "Text"
+         }
+        },
+        "child_fields": []
+       },
+       {
+        "id": "e9aae154-ed9a-4d4f-8c15-01c7c31ded3c",
+        "name": "claims_is_correct",
+        "customer_key": "claims_is_correct",
+        "description": "Yes or No response to the question \"Is this loss run annotation correct according to the instructions?\"",
+        "threshold": 0.1,
+        "field_type": {
+         "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+         "name": "string",
+         "display_type": "text",
+         "customer_field_type": null
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 1
+        },
+        "library_field": {
+         "template": {
+          "id": "34a38910-a421-42c2-b656-25f728b28df5",
+          "name": "Text"
+         }
+        },
+        "child_fields": []
+       }
+      ]
+     },
+     {
+      "id": "24d97eaf-5963-4ca1-8123-a19354a9f464",
+      "name": "Claims Business Verifier",
+      "type": "code_node",
+      "parameters": {
+       "function": "verifiers.verify_business.process",
+       "table_key": "loss_runs_claims_table",
+       "domain_rules": [
+        "check_financial_totals",
+        "check_loss_paid",
+        "check_paid_components",
+        "check_reserve_components",
+        "check_total_incurred",
+        "check_date_order"
+       ],
+       "prompt_template": {
+        "ai": "\n{output}\n",
+        "human": "Here is the text of the loss run:\n< Document >\n{text}\n</ Document >\n\nHere are the relevant rows from the annotation that triggered the domain rule violations:\n< Relevant Rows >\n{relevant_rows}\n</ Relevant Rows >\nRemember to follow our conventions for financials, not what is presented in the document. For example, if a carrier substracts recoveries in the total paid calculation, that is wrong.",
+        "system": "You are an insurance data validation expert. Your job is to read a loss run document and assess whether automated domain rule violations detected in the annotation represent genuine data quality errors or acceptable anomalies.\n\nBe careful to distinguish real extraction errors from legitimate carrier conventions (e.g. partial-year policies, rounding differences, mixed reporting formats, subrogation sign conventions).\n\nAutomated domain rules have flagged the following potential violations in the annotation:\n\n{violations}\n\nYour task: for each violation, assess whether it is a genuine extraction error or an acceptable anomaly. Remember that our standards (that total incurred includes expenses, or that total paid does not include recoveries) are the real source of truth; just because the document calculates these values differently than we would does not mean the anomaly is acceptable. In the end, our financial conventions should be obeyed. \n\nWhen assessing financial discrepancies, keep in mind that individual dollar amounts in loss run documents are sometimes mis-read by OCR (e.g. a leading digit dropped or a digit transposed). If the document totals do not match their components, trust the domain rules and the component fields over the raw total value \u2014 do not simply re-read the suspect total from the document. If component fields are present and internally consistent, use their sum to derive the correct total and output it as a corrective action.\n\nThen extract the following fields as a JSON:\n\n{extraction_fields}"
+       }
+      },
+      "mlmodel": {
+       "id": "fa6ca481-f4f3-41a4-b081-7976143091dd",
+       "name": "InsurGPT Standard",
+       "type": "vertex_ai",
+       "standard": true,
+       "parameters": {
+        "logprobs": false,
+        "model_name": "gemini-3.7-flash",
+        "model_type": "vertex_ai",
+        "fallback_node_type": "gpt_node",
+        "max_context_tokens": 380000,
+        "fallback_mlmodel_id": "323d5c9c-cde0-46a3-8661-ed68d3c63abb",
+        "max_completion_tokens": 65536
+       }
+      },
+      "fields": [
+       {
+        "id": "a634fc2e-3b70-47a6-920f-587439a8b31c",
+        "name": "corrective_actions",
+        "customer_key": "corrective_actions",
+        "description": "JSON list of corrections to apply to the table row(s) that triggered a violation, in the form {field, corrected_value} (plus action_type/row_index when present). Empty list if no genuine error was found or no correction was needed. Ensure any dates written as a corrected_value follow mm/dd/yyyy format.",
+        "threshold": 0.1,
+        "field_type": {
+         "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+         "name": "string",
+         "display_type": "text",
+         "customer_field_type": null
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 0
+        },
+        "library_field": {
+         "template": {
+          "id": "34a38910-a421-42c2-b656-25f728b28df5",
+          "name": "Text"
+         }
+        },
+        "child_fields": []
+       },
+       {
+        "id": "cb1cb4c2-affb-44d3-85f1-0b56667448f5",
+        "name": "found_error",
+        "customer_key": "found_error",
+        "description": "Yes/No,  Whether the LLM judged at least one flagged domain-rule violation to be a genuine extraction error rather than an acceptable carrier convention or anomaly. \"Yes\" if any rule call found a real error; \"No\" if all flagged violations were assessed as acceptable (or no rules fired).",
+        "threshold": 0.1,
+        "field_type": {
+         "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+         "name": "string",
+         "display_type": "text",
+         "customer_field_type": null
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 1
+        },
+        "library_field": {
+         "template": {
+          "id": "34a38910-a421-42c2-b656-25f728b28df5",
+          "name": "Text"
+         }
+        },
+        "child_fields": []
+       },
+       {
+        "id": "e91da5a6-09a4-44c1-96a4-2bf46c0c7d33",
+        "name": "domain_reasoning",
+        "customer_key": "domain_reasoning",
+        "description": "Plain text summary of all violations found in this row and the corrections applied. Include which rule fired, whether it was a genuine error or acceptable anomaly, and the reasoning. Be sure to note the claim number and page number if possible. Keep it brief, around 2-3 sentences.",
+        "threshold": 0.2,
+        "field_type": {
+         "name": "string"
+        },
+        "field_display": {
+         "placeholder_text": null,
+         "minimum_value": null,
+         "maximum_value": null,
+         "date_format": null,
+         "number_of_rows": null,
+         "options": null,
+         "sort_order": 2
+        },
+        "library_field": {
+         "template": {
+          "id": "34a38910-a421-42c2-b656-25f728b28df5",
+          "name": "Text"
+         }
+        },
+        "child_fields": []
+       }
+      ]
+     }
+    ]
+   }
+  }
+ }
+}

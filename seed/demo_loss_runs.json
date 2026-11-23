@@ -1,0 +1,10 @@
+{
+ "customer": "Demo",
+ "customer_description": "Demo organization: example projects available in every environment.",
+ "customer_id": "de300000-0000-4000-8000-000000000001",
+ "project": "Loss Runs",
+ "project_id": "de300000-0000-4000-8000-0000000000a2",
+ "project_description": "Loss runs: document type, policy and claims tables (page chunking), table verifiers and business rules.",
+ "tree_name": "Demo - Loss Runs",
+ "export_from": "selective_loss_runs.json"
+}

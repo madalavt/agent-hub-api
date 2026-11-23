@@ -1,0 +1,779 @@
+{
+ "customer": "Demo",
+ "customer_description": "Demo organization: example projects available in every environment.",
+ "customer_id": "de300000-0000-4000-8000-000000000001",
+ "project": "Mortgage Change",
+ "project_id": "de300000-0000-4000-8000-0000000000a1",
+ "project_description": "Personal lines mortgage change and returned mail: classifies the package (Mortgage Change, Returned Mail, Check, Claim, Other), extracts the mortgagee change fields and a per-policy Risk table (page chunking, confidence scores).",
+ "tree_name": "Demo - Mortgage Change",
+ "starting_node": "Classifier",
+ "branches": [
+  {
+   "parent": "Classifier",
+   "child": "Returned Mail Subdoctype",
+   "condition": "document_type == 'Returned Mail'",
+   "name": "Returned Mail"
+  },
+  {
+   "parent": "Classifier",
+   "child": "Other",
+   "condition": "document_type == 'Other'",
+   "name": "Other"
+  },
+  {
+   "parent": "Classifier",
+   "child": "Check",
+   "condition": "document_type == 'Check'",
+   "name": "Check"
+  },
+  {
+   "parent": "Classifier",
+   "child": "Claim",
+   "condition": "document_type == 'Claim'",
+   "name": "Claim"
+  },
+  {
+   "parent": "Returned Mail Subdoctype",
+   "child": "Returned Mail",
+   "condition": "True",
+   "name": "Connection"
+  },
+  {
+   "parent": "Classifier",
+   "child": "General Fields",
+   "condition": "document_type == 'Mortgage Change'",
+   "name": "Mortgage Change"
+  },
+  {
+   "parent": "General Fields",
+   "child": "Risk",
+   "condition": "True",
+   "name": "Connection"
+  }
+ ],
+ "export": {
+  "data": {
+   "configuration": {
+    "name": "Personal Lines V1",
+    "description": "Mortgage Change and Returned Mail",
+    "parameters": null,
+    "split_package": true,
+    "ocr_page_limit": null,
+    "include_hidden_sheets": false,
+    "split_for_igpt": false,
+    "doc_processing_project_id": "1444",
+    "tree": {
+     "name": "Demo - Mortgage Change",
+     "business_context": "",
+     "nodes": [
+      {
+       "id": "066e5436-ca8a-4ce1-a143-d59ba84fd71c",
+       "name": "Returned Mail Subdoctype",
+       "standard": true,
+       "type": "gpt_node",
+       "parameters": {
+        "prompt_template": {
+         "ai": "\n{output}\n",
+         "human": "\nHere is the document:\n\n{text}\n",
+         "system": "\n\nYou are a highly intelligent insurance administrator and your responsibility is to read emails and/or document packages pertaining to returned mails and return the document type. In order to determine the document type, it is important to read all the contents of each email or package thoroughly. Often, you might come across multiple documents in one package. In such cases, determine the primary purpose or main reason for the email or package to decide its document type. If it's not clear, categorize it as 'Other'. Note the document type is of the format \\\"document type\\\" Here is a full list of document types with a brief description:\n* Renewal Reminder: Identify and extract if the document is a Renewal Reminder, advising the insured or agent that a policy is approaching renewal and action may be required. The label 'RENEWAL REQUIRED' appears at least twice.\n* Notice of Premium Due: Identify and extract if the document is a Notice of Premium Due, indicating an upcoming or unpaid premium amount owed by the insured.\n* Renewal Premium Due: Identify and extract if the document is a Renewal Premium Due Notice, notifying the insured of the payment required to renew the policy.\n* Notice of Cancellation: Identify and extract if the document is a Notice of Cancellation, informing the insured or mortgagee that coverage will be canceled or has been canceled.\n* Notice of non-renewal: Identify and extract if the document is a Notice of Non-Renewal, indicating that the insurance policy will not be renewed at expiration.\n* New Business Policy Jacket: Identify and extract if the document is a New Business Policy Jacket, indicating a newly issued insurance policy package or cover form.\n* Renewal Policy Jacket: Identify and extract if the document is a Renewal Policy Jacket, indicating the renewal package or cover form for an existing policy.\n* New Business Declarations: Identify and extract if the document is a New Business Declarations Page, summarizing a newly issued policy\u2019s coverage, limits, and effective dates.\n* Renewal Declaration: Identify and extract if the document is a Renewal Declaration, summarizing the renewed policy\u2019s coverage, limits, premiums, and effective dates for the new term.\n* Amended Policy Declarations: Identify and extract if the document is an Amended Policy Declarations Page, showing midterm changes or endorsements that modify the existing policy.\n* Notice of Reinstatement: Identify and extract if the document is a Notice of Reinstatement, confirming that a previously canceled policy has been reinstated.\n* Other: Identify and extract if the document does not match any of the listed types above, and classify it as \u201cOther\u201d. Provide a brief reason or description of what kind of document it appears to be (e.g., general correspondence, agent notice, underwriting request, unidentified form).\n\nPlease ensure that you only identify the document types specified in the list above, and return the full document type in the format \\\"document type\\\"\nThe desired output should be a valid JSON format with the following keys: {extraction_fields}\n\nDo not give any explanation. Just return a valid json\n"
+        }
+       },
+       "description": "\n\nYou are a highly intelligent insurance administrator and your responsibility is to read emails and/or document packages pertaining to returned mails and return the document type. In order to determine the document type, it is important to read all the contents of each email or package thoroughly. Often, you might come across multiple documents in one package. In such cases, determine the primary purpose or main reason for the email or package to decide its document type. If it's not clear, categorize it as 'Other'. Note the document type is of the format \\\"document type\\\" Here is a full list of document types with a brief description:\n* Renewal Reminder: Identify and extract if the document is a Renewal Reminder, advising the insured or agent that a policy is approaching renewal and action may be required. The label 'RENEWAL REQUIRED' appears at least twice.\n* Notice of Premium Due: Identify and extract if the document is a Notice of Premium Due, indicating an upcoming or unpaid premium amount owed by the insured.\n* Renewal Premium Due: Identify and extract if the document is a Renewal Premium Due Notice, notifying the insured of the payment required to renew the policy.\n* Notice of Cancellation: Identify and extract if the document is a Notice of Cancellation, informing the insured or mortgagee that coverage will be canceled or has been canceled.\n* Notice of non-renewal: Identify and extract if the document is a Notice of Non-Renewal, indicating that the insurance policy will not be renewed at expiration.\n* New Business Policy Jacket: Identify and extract if the document is a New Business Policy Jacket, indicating a newly issued insurance policy package or cover form.\n* Renewal Policy Jacket: Identify and extract if the document is a Renewal Policy Jacket, indicating the renewal package or cover form for an existing policy.\n* New Business Declarations: Identify and extract if the document is a New Business Declarations Page, summarizing a newly issued policy\u2019s coverage, limits, and effective dates.\n* Renewal Declaration: Identify and extract if the document is a Renewal Declaration, summarizing the renewed policy\u2019s coverage, limits, premiums, and effective dates for the new term.\n* Amended Policy Declarations: Identify and extract if the document is an Amended Policy Declarations Page, showing midterm changes or endorsements that modify the existing policy.\n* Notice of Reinstatement: Identify and extract if the document is a Notice of Reinstatement, confirming that a previously canceled policy has been reinstated.\n* Other: Identify and extract if the document does not match any of the listed types above, and classify it as \u201cOther\u201d. Provide a brief reason or description of what kind of document it appears to be (e.g., general correspondence, agent notice, underwriting request, unidentified form).\n\nPlease ensure that you only identify the document types specified in the list above, and return the full document type in the format \\\"document type\\\"\nThe desired output should be a valid JSON format with the following keys: {extraction_fields}\n\nDo not give any explanation. Just return a valid json\n",
+       "mlmodel": {
+        "id": "fa6ca481-f4f3-41a4-b081-7976143091dd",
+        "name": "InsurGPT Standard",
+        "parameters": {
+         "logprobs": false,
+         "model_name": "gemini-3.7-flash",
+         "model_type": "vertex_ai",
+         "fallback_node_type": "gpt_node",
+         "max_context_tokens": 380000,
+         "fallback_mlmodel_id": "323d5c9c-cde0-46a3-8661-ed68d3c63abb",
+         "max_completion_tokens": 65536
+        },
+        "standard": true,
+        "type": "vertex_ai"
+       },
+       "fields": [
+        {
+         "id": "de1beabf-c48e-4f25-9b61-73f7411a054b",
+         "description": "Return one of the above listed fields. It can't be blank so try to make a best guess if you are not sure from the list above.",
+         "name": "Subdoctype",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "subdoctype",
+         "field_type": {
+          "name": "string"
+         }
+        }
+       ]
+      },
+      {
+       "id": "608f768d-cff3-4314-bb11-246c46b3ae93",
+       "name": "Risk",
+       "standard": true,
+       "type": "code_node",
+       "parameters": {
+        "function": "tables.chunking.process",
+        "chunk_params": {
+         "pdf_chunk_size": 2,
+         "pdf_size_to_chunk": 4
+        },
+        "prompt_template": {
+         "ai": "\n{output}\n",
+         "human": "\n{text}\n",
+         "system": "\n\nYou are a highly intelligent insurance administrator specializing in mortgage change requests. Review the provided mortgage change document and extract every policy number with its corresponding mortgage change details. Identify the document structure (page, table, PDF, or workbook) and use any headers or column labels to match fields before extracting values. Treat each row containing a policy number or loan number as a separate record and return it as one row in the output, even if policy numbers repeat across pages or sheets. If a table continues onto another page without headers, treat it as the same table and keep the same column structure. Do not skip rows. After extraction, confirm the number of output rows matches the number of rows containing policy numbers in the document. If a required field is missing, return an empty string. Extract only what is explicitly shown and do not summarize or combine rows. Ensure that review of the document covers from the first page to the last page.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json. \n\nPolicy number is never blank. \nPlease do not miss/skip any rows. Extract all rows from all pages"
+        }
+       },
+       "description": "Per-policy mortgage change rows (tables.chunking.process; chunks of 2 pages for documents over 4 pages).",
+       "mlmodel": {
+        "id": "d7cdce3d-5cee-49b5-9f31-f6b03ce8c052",
+        "name": "InsurGPT Advanced (with Confidence)",
+        "parameters": {
+         "logprobs": true,
+         "model_name": "gpt-5.6-terra",
+         "model_type": "azure_openai",
+         "reasoning_effort": "none",
+         "fallback_node_type": "gpt_node",
+         "max_context_tokens": 380000,
+         "fallback_mlmodel_id": "8322c1d9-a121-486d-a172-95db2c17a802",
+         "max_completion_tokens": 128000
+        },
+        "standard": true,
+        "type": "azure_openai_reasoning"
+       },
+       "fields": [
+        {
+         "id": "30dfd67d-9fcf-4a25-86a9-4c67f202f081",
+         "description": "One row per policy number (or loan number) in the mortgage change document, with its loan numbers, insured and risk address.",
+         "name": "Risk",
+         "standard": false,
+         "threshold": 0.5,
+         "customer_key": "risk",
+         "field_type": {
+          "name": "table"
+         },
+         "library_field": {
+          "template": {
+           "name": "Table"
+          }
+         },
+         "child_fields": [
+          {
+           "name": "Policy Number",
+           "customer_key": "policy_num1",
+           "description": "The policy number on this row, exactly as written: a 10-digit number, or 13 characters starting with FPH or FFH. Never blank.",
+           "threshold": 0.5,
+           "field_type": {
+            "name": "string"
+           },
+           "library_field": {
+            "template": {
+             "name": "Text"
+            }
+           },
+           "child_fields": []
+          },
+          {
+           "name": "Insured Name",
+           "customer_key": "insuredName",
+           "description": "Full name of the insured / borrower for this policy.",
+           "threshold": 0.5,
+           "field_type": {
+            "name": "string"
+           },
+           "library_field": {
+            "template": {
+             "name": "Text"
+            }
+           },
+           "child_fields": []
+          },
+          {
+           "name": "Loan Number",
+           "customer_key": "loanNumber",
+           "description": "The existing (previous) loan number for this policy, if shown.",
+           "threshold": 0.1,
+           "field_type": {
+            "name": "string"
+           },
+           "library_field": {
+            "template": {
+             "name": "Text"
+            }
+           },
+           "child_fields": []
+          },
+          {
+           "name": "New Loan Number",
+           "customer_key": "newloannum",
+           "description": "The new loan number assigned by the new mortgagee/servicer. If the row shows only one loan number, return it here.",
+           "threshold": 0.5,
+           "field_type": {
+            "name": "string"
+           },
+           "library_field": {
+            "template": {
+             "name": "Text"
+            }
+           },
+           "child_fields": []
+          },
+          {
+           "name": "Risk Address 1",
+           "customer_key": "risk_add1",
+           "description": "Street number and name (or PO Box) of the insured property.",
+           "threshold": 0.1,
+           "field_type": {
+            "name": "string"
+           },
+           "library_field": {
+            "template": {
+             "name": "Text"
+            }
+           },
+           "child_fields": []
+          },
+          {
+           "name": "Risk Address 2",
+           "customer_key": "risk_add2",
+           "description": "Unit, suite, apartment or building of the insured property.",
+           "threshold": 0.1,
+           "field_type": {
+            "name": "string"
+           },
+           "library_field": {
+            "template": {
+             "name": "Text"
+            }
+           },
+           "child_fields": []
+          },
+          {
+           "name": "Risk City",
+           "customer_key": "risk_city",
+           "description": "City of the insured property.",
+           "threshold": 0.1,
+           "field_type": {
+            "name": "string"
+           },
+           "library_field": {
+            "template": {
+             "name": "Text"
+            }
+           },
+           "child_fields": []
+          },
+          {
+           "name": "Risk State",
+           "customer_key": "risk_state",
+           "description": "State of the insured property (two-letter code).",
+           "threshold": 0.1,
+           "field_type": {
+            "name": "string"
+           },
+           "library_field": {
+            "template": {
+             "name": "Text"
+            }
+           },
+           "child_fields": []
+          },
+          {
+           "name": "Risk Zip",
+           "customer_key": "risk_zip",
+           "description": "ZIP code of the insured property.",
+           "threshold": 0.1,
+           "field_type": {
+            "name": "string"
+           },
+           "library_field": {
+            "template": {
+             "name": "Text"
+            }
+           },
+           "child_fields": []
+          },
+          {
+           "name": "Mortgagee Role",
+           "customer_key": "mortgageRole",
+           "description": "Position of the mortgagee on this policy: First Mortgagee, Second Mortgagee or Third Mortgagee. Leave blank if not stated.",
+           "threshold": 0.1,
+           "field_type": {
+            "name": "string"
+           },
+           "library_field": {
+            "template": {
+             "name": "Text"
+            }
+           },
+           "child_fields": []
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "7441fa19-71d9-48e7-9465-c57444a6ac76",
+       "name": "Returned Mail",
+       "standard": true,
+       "type": "gpt_node",
+       "parameters": {
+        "prompt_template": {
+         "ai": "\n{output}\n",
+         "human": "\n{text}\n",
+         "system": "\n\nYou are a highly intelligent insurance administrator and your responsibility is to read emails and/or document packages pertaining to returned mails and extract datapoints from these documents.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n"
+        }
+       },
+       "description": "\n\nYou are a highly intelligent insurance administrator and your responsibility is to read emails and/or document packages pertaining to returned mails and extract datapoints from these documents.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n",
+       "mlmodel": {
+        "id": "ce143033-684e-4e60-a35a-dbacaaa48416",
+        "name": "IGPT Primary",
+        "parameters": {
+         "model_name": "gpt-4.1-2025-04-14",
+         "model_type": "azure_openai",
+         "fallback_node_type": "gpt_node",
+         "max_context_tokens": 256000,
+         "fallback_mlmodel_id": "09d22b8a-558e-4ae7-8169-04a948215437",
+         "max_completion_tokens": 32768
+        },
+        "standard": true,
+        "type": "gpt"
+       },
+       "fields": [
+        {
+         "id": "4c6ed6b0-ee95-40c1-901f-e472f644920c",
+         "description": "Extract the ZIP or postal code of the risk location address.\n",
+         "name": "Zipcode",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "zip",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "537d38ac-0248-4db5-bd06-fa29e44bbfcb",
+         "description": "Extract the first line of the risk location address (street number and street name).",
+         "name": "Address 1",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "addressLine1",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "9a225142-d87a-47dc-87f6-65e2e708c57a",
+         "description": "Review the entire document and extract the Policy Number. Look for labels such as \u201cPolicy Number,\u201d \u201cPolicy No.,\u201d or \u201cPolicy #.\u201d Validate that the extracted value matches one of the accepted formats: (1) a 10-digit numeric identifier, or (2) a 13-character alphanumeric identifier beginning with the prefix \u201cFPH\u201d or \u201cFFH.\u201d Only return the policy number itself, either the numeric or alphanumeric identifier, without any additional text, labels, or formatting. If no value meeting these format requirements is found, return a blank result.",
+         "name": "Policy Number",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "policy_number_ret",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "9be34b77-190b-4bdd-9261-fc9851b97541",
+         "description": "Extract the state of the risk location address.",
+         "name": "State",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "state",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "a5ef4d5f-abce-44c1-87e7-df05e9aa1876",
+         "description": "Extract the full legal name of the insured party (applicant, named insured, or first named insured).\n",
+         "name": "Insured Name",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "insuredName",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "b3d18909-dd87-47d9-85de-83dc6da67945",
+         "description": "Extract the city of the risk location address",
+         "name": "City",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "city",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "ec33e282-7422-4f4a-b3da-102e0be95569",
+         "description": "Extract the second line of the risk location address if available (e.g., suite, floor, building number, PO Box).",
+         "name": "Address 2",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "addressLine2",
+         "field_type": {
+          "name": "string"
+         }
+        }
+       ]
+      },
+      {
+       "id": "7da7df6b-1604-429b-b96a-ca9f9c708a84",
+       "name": "Classifier",
+       "standard": true,
+       "type": "gpt_node",
+       "parameters": {
+        "prompt_template": {
+         "ai": "\n{output}\n",
+         "human": "\nHere is the document:\n\n{text}\n",
+         "system": "You are a highly intelligent insurance administrator and your responsibility is to read emails and/or document packages pertaining to mortgage change and returned mails and return the document type. In order to determine the document type, it is important to read all the contents of each email or package thoroughly. Often, you might come across multiple documents in one package. In such cases, determine the primary purpose or main reason for the email or package to decide its document type. If it's not clear, categorize it as 'Other'. Note the document type is of the format \\\"document type\\\" Here is a full list of document types with a brief description:\n* Mortgage Change: Classify this document as Mortgage Change if its primary purpose is to update, add, remove, or correct mortgagee, lienholder, or loan information on a policy. This includes changes to the mortgagee or lienholder name, mailing address, loan number, or lien status. Documents that explicitly qualify as Mortgage Change include, but are not limited to:\n  - Requests to add a new mortgagee or lienholder to a policy, or to replace an existing one\n  - Requests to remove a mortgagee or lienholder, including lien releases, loan payoff notices, or satisfaction of mortgage letters\n  - Corrections to the mortgagee or lienholder name, mortgagee clause (e.g., ISAOA/ATIMA language), mailing address, or loan number\n  - Notices of loan servicing transfer or assignment of mortgage from one lender or servicer to another\n  - Mortgagee change forms, lender letters, or emails from a lender, servicer, agent, or insured that instruct the insurer to update mortgagee or lienholder details\n  - Changes in mortgagee position or priority (e.g., first mortgagee, second mortgagee)\n  - Documents containing a table, list, or schedule that pairs loan numbers with policy numbers and risk information (such as the insured, property, or risk address), even if the document does not explicitly mention a mortgage change, mortgagee, or lienholder. Column headers may vary (e.g., \\\"Loan #\\\", \\\"Loan Number\\\", \\\"Policy #\\\", \\\"Policy Number\\\", \\\"Risk\\\", \\\"Risk Address\\\", \\\"Property Address\\\", \\\"Insured\\\"). A table like this, with or without a cover letter or email, should be treated as Mortgage Change.\nIf the document meets any of the criteria above, classify it as Mortgage Change even if it does not use the exact words \\\"mortgage change\\\". Outside of the loan number, policy number, and risk table described above, a passing mention of a loan, lender, or mortgagee alone is not enough; the document must request, notify of, or confirm a change to mortgagee, lienholder, or loan information. If the document contains the above details but its primary purpose is to request a policy declaration, classify it as Other.\n* Check: Classify this document as Check if it includes a payment instrument such as a check, refund, or claim payment.\n* Claim: Classify this document as Claim if it relates to an insurance claim \u2014 including claim forms, loss notices, adjuster communications, or claim payment letters.\n* Returned Mail: Classify this document as Returned Mail if it contains markings or stamps indicating non-delivery, such as: Return to Sender, RTS, Undeliverable, Address Unknown, No Such Number, Refused, or Moved - Left No Address. The document may bear evidence of physical return, including post office markings, routing annotations, or handling notes. It may also include a return receipt, delivery failure notice, or postal return label. Do not classify documents about return policies, merchandise returns, return authorizations, policy declaration requests, or customer return requests as Returned Mail, even if they contain the word return. Do not classify forwarding notices from recipients requesting mail be sent elsewhere as Returned Mail unless the notice is marked as undeliverable by the postal service itself.\n* Other: Classify this document as Other if it does not fit into any of the predefined categories (Returned Mail, Mortgage Change, Check, or Claim).\n\nPlease ensure that you only identify the document types specified in the list above, and return the full document type in the format \\\"document type\\\"\nThe desired output should be a valid JSON format with the following keys: {extraction_fields}\n\nDo not give any explanation. Just return a valid json\n"
+        }
+       },
+       "description": "You are a highly intelligent insurance administrator and your responsibility is to read emails and/or document packages pertaining to mortgage change and returned mails and return the document type. In order to determine the document type, it is important to read all the contents of each email or package thoroughly. Often, you might come across multiple documents in one package. In such cases, determine the primary purpose or main reason for the email or package to decide its document type. If it's not clear, categorize it as 'Other'. Note the document type is of the format \\\"document type\\\" Here is a full list of document types with a brief description:\n* Mortgage Change: Classify this document as Mortgage Change if its primary purpose is to update, add, remove, or correct mortgagee, lienholder, or loan information on a policy. This includes changes to the mortgagee or lienholder name, mailing address, loan number, or lien status. Documents that explicitly qualify as Mortgage Change include, but are not limited to:\n  - Requests to add a new mortgagee or lienholder to a policy, or to replace an existing one\n  - Requests to remove a mortgagee or lienholder, including lien releases, loan payoff notices, or satisfaction of mortgage letters\n  - Corrections to the mortgagee or lienholder name, mortgagee clause (e.g., ISAOA/ATIMA language), mailing address, or loan number\n  - Notices of loan servicing transfer or assignment of mortgage from one lender or servicer to another\n  - Mortgagee change forms, lender letters, or emails from a lender, servicer, agent, or insured that instruct the insurer to update mortgagee or lienholder details\n  - Changes in mortgagee position or priority (e.g., first mortgagee, second mortgagee)\n  - Documents containing a table, list, or schedule that pairs loan numbers with policy numbers and risk information (such as the insured, property, or risk address), even if the document does not explicitly mention a mortgage change, mortgagee, or lienholder. Column headers may vary (e.g., \\\"Loan #\\\", \\\"Loan Number\\\", \\\"Policy #\\\", \\\"Policy Number\\\", \\\"Risk\\\", \\\"Risk Address\\\", \\\"Property Address\\\", \\\"Insured\\\"). A table like this, with or without a cover letter or email, should be treated as Mortgage Change.\nIf the document meets any of the criteria above, classify it as Mortgage Change even if it does not use the exact words \\\"mortgage change\\\". Outside of the loan number, policy number, and risk table described above, a passing mention of a loan, lender, or mortgagee alone is not enough; the document must request, notify of, or confirm a change to mortgagee, lienholder, or loan information. If the document contains the above details but its primary purpose is to request a policy declaration, classify it as Other.\n* Check: Classify this document as Check if it includes a payment instrument such as a check, refund, or claim payment.\n* Claim: Classify this document as Claim if it relates to an insurance claim \u2014 including claim forms, loss notices, adjuster communications, or claim payment letters.\n* Returned Mail: Classify this document as Returned Mail if it contains markings or stamps indicating non-delivery, such as: Return to Sender, RTS, Undeliverable, Address Unknown, No Such Number, Refused, or Moved - Left No Address. The document may bear evidence of physical return, including post office markings, routing annotations, or handling notes. It may also include a return receipt, delivery failure notice, or postal return label. Do not classify documents about return policies, merchandise returns, return authorizations, policy declaration requests, or customer return requests as Returned Mail, even if they contain the word return. Do not classify forwarding notices from recipients requesting mail be sent elsewhere as Returned Mail unless the notice is marked as undeliverable by the postal service itself.\n* Other: Classify this document as Other if it does not fit into any of the predefined categories (Returned Mail, Mortgage Change, Check, or Claim).\n\nPlease ensure that you only identify the document types specified in the list above, and return the full document type in the format \\\"document type\\\"\nThe desired output should be a valid JSON format with the following keys: {extraction_fields}\n\nDo not give any explanation. Just return a valid json\n",
+       "mlmodel": {
+        "id": "fa6ca481-f4f3-41a4-b081-7976143091dd",
+        "name": "InsurGPT Standard",
+        "parameters": {
+         "logprobs": false,
+         "model_name": "gemini-3.7-flash",
+         "model_type": "vertex_ai",
+         "fallback_node_type": "gpt_node",
+         "max_context_tokens": 380000,
+         "fallback_mlmodel_id": "323d5c9c-cde0-46a3-8661-ed68d3c63abb",
+         "max_completion_tokens": 65536
+        },
+        "standard": true,
+        "type": "vertex_ai"
+       },
+       "fields": [
+        {
+         "id": "5189f5b4-23f4-498a-9f9b-fbf677a135b5",
+         "description": "Return one of the above listed fields. It can't be blank so try to make a best guess if you are not sure from the list above.",
+         "name": "Document Type",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "document_type",
+         "field_type": {
+          "name": "string"
+         }
+        }
+       ]
+      },
+      {
+       "id": "a16923b9-5971-4650-a9a1-05004abc7e46",
+       "name": "Other",
+       "standard": true,
+       "type": "gpt_node",
+       "parameters": {
+        "prompt_template": {
+         "ai": "\n{output}\n",
+         "human": "\n{text}\n",
+         "system": "\n\nYou are a highly intelligent Insurance administrator and your job is to read and extract datapoints from a Census file. This is an excel spreadsheet containing the list of members (employees) who are listed under the health plan.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n"
+        }
+       },
+       "description": "\n\nYou are a highly intelligent Insurance administrator and your job is to read and extract datapoints from a Census file. This is an excel spreadsheet containing the list of members (employees) who are listed under the health plan.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n",
+       "mlmodel": {
+        "id": "ce143033-684e-4e60-a35a-dbacaaa48416",
+        "name": "IGPT Primary",
+        "parameters": {
+         "model_name": "gpt-4.1-2025-04-14",
+         "model_type": "azure_openai",
+         "fallback_node_type": "gpt_node",
+         "max_context_tokens": 256000,
+         "fallback_mlmodel_id": "09d22b8a-558e-4ae7-8169-04a948215437",
+         "max_completion_tokens": 32768
+        },
+        "standard": true,
+        "type": "gpt"
+       },
+       "fields": [
+        {
+         "id": "30bfd0e3-7ed5-414c-9c7c-f655ed1ea3e6",
+         "description": "Return a string value of \"placeholder\".",
+         "name": "Placeholder",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "placeholder",
+         "field_type": {
+          "name": "string"
+         }
+        }
+       ]
+      },
+      {
+       "id": "b46e088e-8792-4434-aafe-0d6794a5fec7",
+       "name": "General Fields",
+       "standard": true,
+       "type": "gpt_node",
+       "parameters": {
+        "prompt_template": {
+         "ai": "\n{output}\n",
+         "human": "\n{text}\n",
+         "system": "\n\nYou are a highly intelligent insurance administrator specializing in mortgage change requests. Review the provided mortgage change document and extract fields.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n"
+        }
+       },
+       "description": "\n\nYou are a highly intelligent insurance administrator specializing in mortgage change requests. Review the provided mortgage change document and extract fields.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n",
+       "mlmodel": {
+        "id": "8322c1d9-a121-486d-a172-95db2c17a802",
+        "name": "InsurGPT Standard (with Confidence)",
+        "parameters": {
+         "logprobs": true,
+         "model_name": "gpt-5.6-luna",
+         "model_type": "azure_openai",
+         "reasoning_effort": "none",
+         "fallback_node_type": "gpt_node",
+         "max_context_tokens": 380000,
+         "fallback_mlmodel_id": "d7cdce3d-5cee-49b5-9f31-f6b03ce8c052",
+         "max_completion_tokens": 128000
+        },
+        "standard": true,
+        "type": "azure_openai_reasoning"
+       },
+       "fields": [
+        {
+         "id": "15d7b25c-d226-4e8c-bfe4-de8b007d7bff",
+         "description": "Extract the complete legal entity name of the Previous Mortgagee (the original lender or financial institution holding the mortgage interest being transferred).Keep the name exactly as printed, including abbreviations (LLC, Inc., N.A.), d/b/a names, and any successor and/or assign or ISAOA / ATIMA language, joining it to the name if it appears on the next line. Do not include any address, phone, loan number, servicing agent reference, parenthetical disclaimer, or department line. Never extract Frontline Insurance or First Protective Insurance as the Previous Mortgagee, even if mentioned elsewhere. Leave blank if the document names no previous mortgagee.",
+         "name": "Previous Mortgagee",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "prev_name",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "17393602-9291-4a50-8e9b-12b31861cd90",
+         "description": "Extract the city listed in the address of the Previous Mortgagee. Do not extract city addresses associated with Frontline Insurance or First Protective Insurance. If the only address available belongs to Frontline Insurance or First Protective Insurance, leave blank.",
+         "name": "Previous Mortgagee City",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "prev_city",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "1fc41ce9-ee92-4365-9b4d-965680415c7c",
+         "description": "Extract the ZIP or postal code of the address of the New Mortgagee. This is usually follows the new mortgagee's name in the document.",
+         "name": "New Mortgagee Postal Code",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "new_zip",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "262e9ea3-0e5a-4d1d-b6c3-d7a3be9bf0f5",
+         "description": "Extract the city listed in the address of the New Mortgagee. This is usually follows the new mortgagee's name in the document.",
+         "name": "New Mortgagee City",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "new_city",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "3debac22-20b9-4bed-9fea-e11dd61e7b81",
+         "description": "Extract only the apartment, suite, unit, floor, building, or room number of the New Mortgagee's mailing address (such as \"Suite 360\", \"Apt 4B\", \"Unit D\", \"Floor 2\"), exactly as\nwritten, including the designator word and its number. Do not include the street number and\nstreet name or the PO Box \u2014 those belong to Address Line 1 only, and the same text must never appear in both fields. Do not include the city, state, or ZIP, or any abbreviation such as\nISAOA, ATIMA, ISAOA ATIMA, C/O, CENLAR, NA, N/A, N.A., or CO. Do not infer anything \u2014 extract only what is written in the document. Return an empty string if the address has no apartment, suite, unit, floor, building, or room number, including when the address is only a PO Box.",
+         "name": "New Mortgagee Address 2",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "new_addressLine2",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "743ac41e-0a4e-4bc2-a8c9-41ba47a49a96",
+         "description": "Extract the full legal entity name exactly as written, including any successor and/or assign language, of the mortgagee (lender or bank) listed on the document based on new Mortgagee Details, including the. This is the party to whom the interest of loan/s will be transferred, assigned, removed, or paid off. Keep the name exactly as printed, including abbreviations (LLC, Inc., N.A.), d/b/a names, and any successor and/or assign or ISAOA / ATIMA language, joining it to the name if it appears on the next line.Do not include any address, phone, loan number, or department line. Always note that this is not Frontline Insurance or First Protective Insurance. Return an empty string if the document has no new mortgagee.",
+         "name": "New Mortgagee",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "new_name",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "7ab6dbd1-50cb-4ceb-a0e2-e128934275d9",
+         "description": "Extract only the apartment, suite, unit, floor, or building number of the Previous Mortgagee's\naddress (such as \"Suite 360\", \"Apt 4B\", \"Unit D\"). Return it exactly as written, including the\ndesignator word and its number. Do not include the street number and street name or the PO Box \u2014 those belong to Address Line 1 only. Do not include the city, state, or ZIP, or any\nabbreviation such as ISAOA, ATIMA, ISAOA ATIMA, C/O, CENLAR, NA, N/A, N.A., or CO. Do not infer anything \u2014 extract only what is written in the document. If the only address available belongs to Frontline Insurance or First Protective Insurance, or no address is given for the Previous Mortgagee, leave blank. Leave blank if there is no apartment, suite, or unit number.",
+         "name": "Previous Mortgagee Address 2",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "prev_add2",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "7cc649ab-0977-4415-95bf-2e8303134955",
+         "description": "Identify the effective date of the mortgage change, which is typically the date the change takes effect and is often the current date. Return the date in YYYY-MM-DD format. Locate this date within the same document where the mortgage change is requested. If an explicit effective date is not stated, use the payoff date, transfer date, or paid-in-full date (for Payoff requests), if available. If none of these dates are present, use the available date shown in the document.",
+         "name": "Effective Date",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "changeEffectiveDate",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "7e577d44-ba7b-49cf-af2a-7584a8eb38cb",
+         "description": "Extract the ZIP or postal code of the address of the Previous Mortgagee. Do not extract zip or postal code associated with Frontline Insurance or First Protective Insurance. If the only address available belongs to Frontline Insurance or First Protective Insurance, leave blank.",
+         "name": "Previous Mortgagee Postal Code",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "prev_zip",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "a290ebfd-0304-4687-b383-2a95f233db6f",
+         "description": "Extract only the first line of the New Mortgagee's mailing address: the street number and street name, or the PO Box. Do not include the apartment, suite, unit, floor, building, or room number \u2014 that belongs to Address Line 2 only, and the same text must never appear in both fields. Do not include abbreviations, mortgagee designations, notes, or other non-address information in this field, including ISAOA, ATIMA, ISAOA ATIMA, C/O, CENLAR, NA, N/A, N.A., CO, or \"Its Successors and/or Assigns\" \u2014 drop these even when they are printed on the same line as the street or PO Box. If a PO Box or P0 Box is present, normalize it to \"PO Box\" and return the PO Box as Address Line 1. Return an empty string if no street address or PO Box is present for the New Mortgagee.",
+         "name": "New Mortgagee Address 1",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "new_addressLine1",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "aa16a5d4-8962-4717-905c-c8f2712160b2",
+         "description": "Extract only the first line of the Previous Mortgagee's mailing address, containing the street number and street name, or the PO Box. Exclude building/suite numbers, abbreviations,\nmortgagee designations, notes, and non-address information including ISAOA, ATIMA, ISAOA ATIMA, C/O, CENLAR, NA, N/A, N.A., CO, and \"Its Successors and/or Assigns\" \u2014 drop these even when they are printed on the same line as the street or PO Box. If a PO Box or P0 Box is present, normalize it to \"PO Box\" and return as Address Line 1. Do not extract addresses associated with Frontline Insurance or First Protective Insurance. If the only address available belongs to Frontline Insurance or First Protective Insurance, or no address is given for the Previous Mortgagee, leave blank.",
+         "name": "Previous Mortgagee Address 1",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "prev_add1",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "cfe09637-586a-493a-8dc2-73601b22e2ac",
+         "description": "Extract the state listed in the address of the New Mortgagee. This is usually follows the new mortgagee's name in the document.",
+         "name": "New Mortgagee State",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "new_state",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "d4f4b276-7e52-4a30-8885-37d94a4199fd",
+         "description": "Extract the state listed in the address of the Previous Mortgagee. Do not extract state addresses associated with Frontline Insurance or First Protective Insurance. If the only address available belongs to Frontline Insurance or First Protective Insurance, leave blank.",
+         "name": "Previous Mortgagee State",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "prev_state",
+         "field_type": {
+          "name": "string"
+         }
+        },
+        {
+         "id": "f8b71e36-dfd4-4b8a-bfdc-60c953d43fc7",
+         "description": "Extract the type of mortgagee change indicated in the document based on keywords or context from the request. For each request, the option will be either one of the following: 'Payoff', 'Removal', 'Transfer'. Most of the time you will find a request to update or correct a clause. These clause update or correction should also be classified as 'Transfer'. If you cannot identify the type, leave the field blank.",
+         "name": "Mortgagee Change Type",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "mortgageeChangeType",
+         "field_type": {
+          "name": "string"
+         }
+        }
+       ]
+      },
+      {
+       "id": "e13f7576-9d8d-4eea-914b-dc9478e490ee",
+       "name": "Claim",
+       "standard": true,
+       "type": "gpt_node",
+       "parameters": {
+        "prompt_template": {
+         "ai": "\n{output}\n",
+         "human": "\n{text}\n",
+         "system": "\n\nYou are a highly intelligent Insurance administrator and your job is to read and extract datapoints from a Census file. This is an excel spreadsheet containing the list of members (employees) who are listed under the health plan.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n"
+        }
+       },
+       "description": "\n\nYou are a highly intelligent Insurance administrator and your job is to read and extract datapoints from a Census file. This is an excel spreadsheet containing the list of members (employees) who are listed under the health plan.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n",
+       "mlmodel": {
+        "id": "ce143033-684e-4e60-a35a-dbacaaa48416",
+        "name": "IGPT Primary",
+        "parameters": {
+         "model_name": "gpt-4.1-2025-04-14",
+         "model_type": "azure_openai",
+         "fallback_node_type": "gpt_node",
+         "max_context_tokens": 256000,
+         "fallback_mlmodel_id": "09d22b8a-558e-4ae7-8169-04a948215437",
+         "max_completion_tokens": 32768
+        },
+        "standard": true,
+        "type": "gpt"
+       },
+       "fields": [
+        {
+         "id": "7947a835-362a-430c-88de-9d0d38913c2a",
+         "description": "Return a string value of \"placeholder\".",
+         "name": "Placeholder",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "placeholder",
+         "field_type": {
+          "name": "string"
+         }
+        }
+       ]
+      },
+      {
+       "id": "f8f9cc61-496a-4861-ad85-8951763b107d",
+       "name": "Check",
+       "standard": true,
+       "type": "gpt_node",
+       "parameters": {
+        "prompt_template": {
+         "ai": "\n{output}\n",
+         "human": "\n{text}\n",
+         "system": "\n\nYou are a highly intelligent Insurance administrator and your job is to read and extract datapoints from a Census file. This is an excel spreadsheet containing the list of members (employees) who are listed under the health plan.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n"
+        }
+       },
+       "description": "\n\nYou are a highly intelligent Insurance administrator and your job is to read and extract datapoints from a Census file. This is an excel spreadsheet containing the list of members (employees) who are listed under the health plan.\n\nThe desired output should be a valid JSON format with the following keys:\n\n{extraction_fields}\n\nDo not give any explanation. Just return a valid json\n",
+       "mlmodel": {
+        "id": "ce143033-684e-4e60-a35a-dbacaaa48416",
+        "name": "IGPT Primary",
+        "parameters": {
+         "model_name": "gpt-4.1-2025-04-14",
+         "model_type": "azure_openai",
+         "fallback_node_type": "gpt_node",
+         "max_context_tokens": 256000,
+         "fallback_mlmodel_id": "09d22b8a-558e-4ae7-8169-04a948215437",
+         "max_completion_tokens": 32768
+        },
+        "standard": true,
+        "type": "gpt"
+       },
+       "fields": [
+        {
+         "id": "28dbba2e-3785-4d8a-acc7-b2b070bce57c",
+         "description": "Return a string value of \"placeholder\".",
+         "name": "Placeholder",
+         "standard": true,
+         "threshold": 0.1,
+         "customer_key": "placeholder",
+         "field_type": {
+          "name": "string"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   }
+  }
+ }
+}

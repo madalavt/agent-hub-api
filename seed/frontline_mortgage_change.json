@@ -1,0 +1,90 @@
+{
+ "customer": "Frontline Insurance",
+ "project": "Mortgage Change",
+ "project_id": "0a25aade-a622-4224-874e-d71d440941e8",
+ "project_description": "Classify mortgage change, check, claim, returned mail and other documents",
+ "tree_name": "Frontline - Mortgage Change",
+ "export": {
+  "data": {
+   "tree": {
+    "id": "19044e01-9646-4bcf-bd0d-276f7e496817",
+    "name": "Decision Tree",
+    "business_context": "",
+    "standard": true,
+    "configurations": [
+     {
+      "id": "f3c43f55-d83f-4167-8eda-f71575944d97",
+      "name": "Personal Lines V2",
+      "parameters": null,
+      "split_package": true,
+      "ocr_page_limit": null,
+      "include_hidden_sheets": false,
+      "split_for_igpt": false,
+      "doc_processing_project_id": "1514",
+      "customer": {
+       "id": "8e7377f4-5669-46ec-a7d2-2147acea3468",
+       "name": "Frontline Insurance"
+      }
+     }
+    ],
+    "starting_node": {
+     "id": "e4cf3da7-1400-435d-bd1f-7528365f54e3",
+     "name": "Classifier",
+     "standard": true,
+     "type": "gpt_node",
+     "parameters": {
+      "prompt_template": {
+       "ai": "\n{output}\n",
+       "human": "\nHere is the document:\n\n{text}\n",
+       "system": "You are a highly intelligent insurance administrator and your responsibility is to read emails and/or document packages pertaining to mortgage change and returned mails and return the document type. In order to determine the document type, it is important to read all the contents of each email or package thoroughly. Often, you might come across multiple documents in one package. In such cases, determine the primary purpose or main reason for the email or package to decide its document type. If it's not clear, categorize it as 'Other'. Note the document type is of the format \\\"document type\\\" Here is a full list of document types with a brief description:\n* Mortgage Change: Classify this document as Mortgage Change if its primary purpose is to update, add, remove, or correct mortgagee, lienholder, or loan information on a policy. This includes changes to the mortgagee or lienholder name, mailing address, loan number, or lien status. Documents that explicitly qualify as Mortgage Change include, but are not limited to:\n  - Requests to add a new mortgagee or lienholder to a policy, or to replace an existing one\n  - Requests to remove a mortgagee or lienholder, including lien releases, loan payoff notices, or satisfaction of mortgage letters\n  - Corrections to the mortgagee or lienholder name, mortgagee clause (e.g., ISAOA/ATIMA language), mailing address, or loan number\n  - Notices of loan servicing transfer or assignment of mortgage from one lender or servicer to another\n  - Mortgagee change forms, lender letters, or emails from a lender, servicer, agent, or insured that instruct the insurer to update mortgagee or lienholder details\n  - Changes in mortgagee position or priority (e.g., first mortgagee, second mortgagee)\n  - Documents containing a table, list, or schedule that pairs loan numbers with policy numbers and risk information (such as the insured, property, or risk address), even if the document does not explicitly mention a mortgage change, mortgagee, or lienholder. Column headers may vary (e.g., \\\"Loan #\\\", \\\"Loan Number\\\", \\\"Policy #\\\", \\\"Policy Number\\\", \\\"Risk\\\", \\\"Risk Address\\\", \\\"Property Address\\\", \\\"Insured\\\"). A table like this, with or without a cover letter or email, should be treated as Mortgage Change.\nIf the document meets any of the criteria above, classify it as Mortgage Change even if it does not use the exact words \\\"mortgage change\\\". Outside of the loan number, policy number, and risk table described above, a passing mention of a loan, lender, or mortgagee alone is not enough; the document must request, notify of, or confirm a change to mortgagee, lienholder, or loan information. If the document contains the above details but its primary purpose is to request a policy declaration, classify it as Other.\n* Check: Classify this document as Check if it includes a payment instrument such as a check, refund, or claim payment.\n* Claim: Classify this document as Claim if it relates to an insurance claim — including claim forms, loss notices, adjuster communications, or claim payment letters.\n* Returned Mail: Classify this document as Returned Mail if it contains markings or stamps indicating non-delivery, such as: Return to Sender, RTS, Undeliverable, Address Unknown, No Such Number, Refused, or Moved - Left No Address. The document may bear evidence of physical return, including post office markings, routing annotations, or handling notes. It may also include a return receipt, delivery failure notice, or postal return label. Do not classify documents about return policies, merchandise returns, return authorizations, policy declaration requests, or customer return requests as Returned Mail, even if they contain the word return. Do not classify forwarding notices from recipients requesting mail be sent elsewhere as Returned Mail unless the notice is marked as undeliverable by the postal service itself.\n* Other: Classify this document as Other if it does not fit into any of the predefined categories (Returned Mail, Mortgage Change, Check, or Claim).\n\nPlease ensure that you only identify the document types specified in the list above, and return the full document type in the format \\\"document type\\\"\nThe desired output should be a valid JSON format with the following keys: {extraction_fields}\n\nDo not give any explanation. Just return a valid json\n"
+      }
+     },
+     "description": "Classifies mortgage change, check, claim, returned mail and other documents.",
+     "mlmodel": {
+      "id": "323d5c9c-cde0-46a3-8661-ed68d3c63abb",
+      "name": "InsurGPT Advanced",
+      "parameters": {
+       "logprobs": false,
+       "model_name": "gpt-5.6-terra",
+       "model_type": "azure_openai",
+       "fallback_node_type": "gpt_node",
+       "max_context_tokens": 380000,
+       "fallback_mlmodel_id": "fa6ca481-f4f3-41a4-b081-7976143091dd",
+       "max_completion_tokens": 128000
+      },
+      "standard": true,
+      "type": "azure_openai_reasoning"
+     },
+     "fields": [
+      {
+       "id": "71f73656-f6d5-465f-b047-cd53631c1662",
+       "categories": "category 1, category 2",
+       "description": "Return one of the above listed fields. It can't be blank so try to make a best guess if you are not sure from the list above.",
+       "name": "Document Type",
+       "standard": true,
+       "threshold": 0.1,
+       "customer_key": "document_type",
+       "field_type": {
+        "id": "d856a6a8-98e3-49c1-9364-bd695a53f065",
+        "name": "string",
+        "display_type": "text",
+        "customer_field_type": null
+       },
+       "field_display": {
+        "placeholder_text": null,
+        "minimum_value": null,
+        "maximum_value": null,
+        "date_format": null,
+        "number_of_rows": null,
+        "options": null,
+        "sort_order": 0
+       },
+       "parent": null,
+       "child_fields": []
+      }
+     ]
+    }
+   }
+  }
+ }
+}
